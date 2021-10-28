@@ -38,7 +38,7 @@ public:
 
     WakaPlugin();
     ~WakaPlugin();
-    static void ShowMessagePrompt(const QString str);
+    void showMessagePrompt(const QString str);
 
     bool initialize(const QStringList &arguments, QString *errorString);
     void extensionsInitialized();
@@ -74,13 +74,8 @@ private:
 
     QString _ignore_patern;
     QThread *_cliGettingThread;
-    std::unique_ptr<QUrl> _req_url;
     QPointer<QToolButton> _heartBeatButton;
     QSharedPointer<WakaOptions> _wakaOptions;
-
-    const int64_t _cooldownTime = 120;
-    const QString _urlPrefix{
-        "https://wakatime.com/api/v1/users/current/heartbeats?api_key="};
 };
 
 

@@ -4,11 +4,11 @@
 #include <QObject>
 #include <QNetworkAccessManager>
 #include "waka_constants.h"
+#include "waka_options.h"
 
 namespace Wakatime {
 namespace Internal {
 
-// For using OSInfo
 using namespace Wakatime::Constants;
 
 class CliGetter: public QObject
@@ -17,6 +17,7 @@ class CliGetter: public QObject
 
     QNetworkAccessManager *_netMan;
     QSslConfiguration _sslConfig;
+    const WakaOptions *_wakaOptions;
     OSInfo _osInfo;
     QString _wakaCliExecutablePath;
 public:

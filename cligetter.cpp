@@ -219,7 +219,7 @@ void CliGetter::startGettingAssertUrl(){
             //if we reach here means there was an error
             QString msg = "Sorry, couldn't connect to ";
             msg += reply->url().toString();
-            WakaPlugin::ShowMessagePrompt(msg);
+            emit cli->promptMessage(msg);
         }
     });
     QSslSocket::supportsSsl()?emit promptMessage("SSL support exists"):
