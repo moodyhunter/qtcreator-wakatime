@@ -48,10 +48,10 @@ void WakaPlugin::showMessagePrompt(const QString str){
         return;
 
     QTC_ASSERT(!_wakaOptions->isDebug(),
-#if IDE_LESS_15_VERSION==1
-   Core::MessageManager::write(str);
+#if IDE_LESS_15_VERSION>0
+   Core::MessageManager::write(str)
 #else
-   Core::MessageManager::writeDisrupting(QString(str));
+   Core::MessageManager::writeDisrupting(QString(str))
 #endif
     );
 }
