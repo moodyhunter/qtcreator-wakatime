@@ -207,7 +207,7 @@ void CliGetter::startGettingAssertUrl(){
     }
 #endif
 
-    auto request = QNetworkRequest(Wakatime::Constants::WAKATIME_RELEASE_URL);
+    auto request = QNetworkRequest(QUrl(Wakatime::Constants::WAKATIME_RELEASE_URL));
     request.setSslConfiguration(_sslConfig);
     auto reply = _netMan->get(request);
     connect(reply,&QNetworkReply::finished,[cli=this,reply](){
