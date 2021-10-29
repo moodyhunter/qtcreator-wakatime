@@ -147,9 +147,20 @@ jobs:
         set(ENV{CC} ${{ matrix.config.cc }})
         set(ENV{CXX} ${{ matrix.config.cxx }})
         set(ENV{MACOSX_DEPLOYMENT_TARGET} "10.13")
+        set(ENV{NINJA_STATUS} "[%f/%t %o/sec] ")
+
         if ("${{ runner.os }}" STREQUAL "Windows" AND NOT "x${{ matrix.config.environment_script }}" STREQUAL "x")
           execute_process(
-            COMMAND "${{ matrix.config.environment_script }}" && set
+            COMMAND "${{ matrix.config.environment_script }}" && set && python
+            -u ${{ steps.qt_creator.outputs.qtc_dir }}/scripts/build_plugin.py
+            --name "$ENV{PLUGIN_NAME}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}"
+            --src .
+            --add-config=-DCMAKE_TOOLCHAIN_FILE=$ENV{GITHUB_WORKSPACE}/vcpkg/scripts/buildsystems/vcpkg.cmake
+            --build build
+            --qt-path "${{ steps.qt.outputs.qt_dir }}"
+            --qtc-path "${{ steps.qt_creator.outputs.qtc_dir }}"
+            --output-path "$ENV{GITHUB_WORKSPACE}"
+            RESULT_VARIABLE result
             OUTPUT_FILE environment_script_output.txt
           )
           file(STRINGS environment_script_output.txt output_lines)
@@ -159,35 +170,19 @@ jobs:
             endif()
           endforeach()
         endif()
-        set(ENV{NINJA_STATUS} "[%f/%t %o/sec] ")
 
-        if("${{ runner.os }}" STREQUAL "Windows")
-            execute_process(
-              COMMAND  python
-                -u ${{ steps.qt_creator.outputs.qtc_dir }}/scripts/build_plugin.py
-                --name "$ENV{PLUGIN_NAME}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}"
-                --src .
-                --add-config=-DCMAKE_TOOLCHAIN_FILE=$ENV{GITHUB_WORKSPACE}/vcpkg/scripts/buildsystems/vcpkg.cmake
-                --build build
-                --qt-path "${{ steps.qt.outputs.qt_dir }}"
-                --qtc-path "${{ steps.qt_creator.outputs.qtc_dir }}"
-                --output-path "$ENV{GITHUB_WORKSPACE}"
-              RESULT_VARIABLE result
-            )
-        else()
-            execute_process(
-              COMMAND python
-                -u ${{ steps.qt_creator.outputs.qtc_dir }}/scripts/build_plugin.py
-                --name "$ENV{PLUGIN_NAME}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}"
-                --src .
-                --add-config=-DCMAKE_TOOLCHAIN_FILE=$ENV{GITHUB_WORKSPACE}/vcpkg/scripts/buildsystems/vcpkg.cmake
-                --build build
-                --qt-path "${{ steps.qt.outputs.qt_dir }}"
-                --qtc-path "${{ steps.qt_creator.outputs.qtc_dir }}"
-                --output-path "$ENV{GITHUB_WORKSPACE}"
-              RESULT_VARIABLE result
-            )
-        endif()
+        execute_process(
+          COMMAND python
+            -u ${{ steps.qt_creator.outputs.qtc_dir }}/scripts/build_plugin.py
+            --name "$ENV{PLUGIN_NAME}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}"
+            --src .
+            --add-config=-DCMAKE_TOOLCHAIN_FILE=$ENV{GITHUB_WORKSPACE}/vcpkg/scripts/buildsystems/vcpkg.cmake
+            --build build
+            --qt-path "${{ steps.qt.outputs.qt_dir }}"
+            --qtc-path "${{ steps.qt_creator.outputs.qtc_dir }}"
+            --output-path "$ENV{GITHUB_WORKSPACE}"
+          RESULT_VARIABLE result
+        )
         if (NOT result EQUAL 0)
           string(REGEX MATCH "FAILED:.*$" error_message "${output}")
           string(REPLACE "\n" "%0A" error_message "${error_message}")
