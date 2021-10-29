@@ -148,7 +148,7 @@ jobs:
         "${{ matrix.config.environment_script }}" && python
           -u
           ${{ steps.qt_creator.outputs.qtc_dir }}/scripts/build_plugin.py
-          --name %PLUGIN_NAME%-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}
+          --name ${{ env.PLUGIN_NAME }}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}
           --src .
           --add-config=-DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
           --build build
@@ -161,32 +161,15 @@ jobs:
       if: matrix.config.os != 'windows-latest'
       shell: cmake -P {0}
       run: |
-        set(ENV{CC} ${{ matrix.config.cc }})
-        set(ENV{CXX} ${{ matrix.config.cxx }})
-        set(ENV{MACOSX_DEPLOYMENT_TARGET} "10.13")
-
-        set(ENV{NINJA_STATUS} "[%f/%t %o/sec] ")
-
-        execute_process(
-          COMMAND python
-            -u
-            ${{ steps.qt_creator.outputs.qtc_dir }}/scripts/build_plugin.py
-            --name "$ENV{PLUGIN_NAME}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}"
-            --src .
-            --add-config=-DCMAKE_TOOLCHAIN_FILE=${{ matrix.config.qtc_version }}/vcpkg/scripts/buildsystems/vcpkg.cmake
-            --build build
-            --qt-path "${{ steps.qt.outputs.qt_dir }}"
-            --qtc-path "${{ steps.qt_creator.outputs.qtc_dir }}"
-            --output-path "$ENV{GITHUB_WORKSPACE}"
-          RESULT_VARIABLE result
-        )
-
-        if (NOT result EQUAL 0)
-          string(REGEX MATCH "FAILED:.*$" error_message "${output}")
-          string(REPLACE "\n" "%0A" error_message "${error_message}")
-          message("::error::${error_message}")
-          message(FATAL_ERROR "Build failed")
-        endif()
+        python -u
+          ${{ steps.qt_creator.outputs.qtc_dir }}/scripts/build_plugin.py
+          --name ${{ env.PLUGIN_NAME }}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}
+          --src .
+          --add-config=-DCMAKE_TOOLCHAIN_FILE=${{ matrix.config.qtc_version }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+          --build build
+          --qt-path "${{ steps.qt.outputs.qt_dir }}"
+          --qtc-path "${{ steps.qt_creator.outputs.qtc_dir }}"
+          --output-path "$ENV{GITHUB_WORKSPACE}"
 
     - uses: actions/upload-artifact@v2
       id: upload_artifact
