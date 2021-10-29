@@ -148,10 +148,14 @@ void WakaPlugin::extensionsInitialized()
 
 ExtensionSystem::IPlugin::ShutdownFlag WakaPlugin::aboutToShutdown()
 {
-  // Save settings
-  // Disconnect from signals that are not needed during shutdown
-  // Hide UI (if you add UI that is not in the main window directly)
-  return SynchronousShutdown;
+    // Save settings
+    // Disconnect from signals that are not needed during shutdown
+    // Hide UI (if you add UI that is not in the main window directly)
+    if(_cliGettingThread->isRunning()==true){
+        _cliGettingThread->quit();
+    }
+    _cliGettingThread->terminate();
+    return SynchronousShutdown;
 }
 
 void WakaPlugin::onInStatusBarChanged()

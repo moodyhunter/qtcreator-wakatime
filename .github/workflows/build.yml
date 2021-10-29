@@ -248,10 +248,6 @@ jobs:
             name: "Linux Latest x64", artifact: "Linux-x64.7z",
             os: ubuntu-latest
           }
-        - {
-            name: "macOS Latest x64", artifact: "macOS-x64.7z",
-            os: macos-latest
-          }
     needs: release
 
     steps:
