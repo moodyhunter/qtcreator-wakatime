@@ -1,11 +1,10 @@
 name: Build plugin
 
-on: [push,pull_request]
+on: [push]
 
 env:
   PLUGIN_NAME: Untitled
   QT_VERSION: 5.15.2
-  QT_CREATOR_VERSION: 4.14.1
   QT_CREATOR_SNAPSHOT: NO
   CMAKE_VERSION: 3.18.3
   NINJA_VERSION: 1.10.1
@@ -18,14 +17,16 @@ jobs:
       matrix:
         config:
         - {
-            name: "Windows Latest MSVC", artifact: "Windows-x64",
+            name: "Windows Latest MSVC QtCreator 4.14.1", artifact: "Windows-x64",
             os: windows-latest,
+            qtc_version: 4.14.1
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
         - {
-            name: "Ubuntu Latest GCC", artifact: "Linux-x64",
+            name: "Ubuntu Latest GCC QtCreator 4.14.1", artifact: "Linux-x64",
             os: ubuntu-latest,
+            qtc_version: 4.14.1
             cc: "gcc", cxx: "g++"
           }
 
@@ -109,12 +110,12 @@ jobs:
       id: qt_creator
       shell: cmake -P {0}
       run: |
-        string(REGEX MATCH "([0-9]+.[0-9]+).[0-9]+" outvar "$ENV{QT_CREATOR_VERSION}")
+        string(REGEX MATCH "([0-9]+.[0-9]+).[0-9]+" outvar "${{ matrix.config.qtc_version }}")
 
-        set(qtc_base_url "https://download.qt.io/official_releases/qtcreator/${CMAKE_MATCH_1}/$ENV{QT_CREATOR_VERSION}/installer_source")
+        set(qtc_base_url "https://download.qt.io/official_releases/qtcreator/${CMAKE_MATCH_1}/${{ matrix.config.qtc_version }}/installer_source")
         set(qtc_snapshot "$ENV{QT_CREATOR_SNAPSHOT}")
         if (qtc_snapshot)
-          set(qtc_base_url "https://download.qt.io/snapshots/qtcreator/${CMAKE_MATCH_1}/$ENV{QT_CREATOR_VERSION}/installer_source/${qtc_snapshot}")
+          set(qtc_base_url "https://download.qt.io/snapshots/qtcreator/${CMAKE_MATCH_1}/${{matrix.config.qtc_version }}/installer_source/${qtc_snapshot}")
         endif()
 
         if ("${{ runner.os }}" STREQUAL "Windows")
@@ -147,7 +148,7 @@ jobs:
         "${{ matrix.config.environment_script }}" && python
           -u
           ${{ steps.qt_creator.outputs.qtc_dir }}/scripts/build_plugin.py
-          --name %PLUGIN_NAME%-%QT_CREATOR_VERSION%-${{ matrix.config.artifact }}
+          --name %PLUGIN_NAME%-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}
           --src .
           --add-config=-DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
           --build build
@@ -164,28 +165,15 @@ jobs:
         set(ENV{CXX} ${{ matrix.config.cxx }})
         set(ENV{MACOSX_DEPLOYMENT_TARGET} "10.13")
 
-        if ("${{ runner.os }}" STREQUAL "Windows" AND NOT "x${{ matrix.config.environment_script }}" STREQUAL "x")
-          execute_process(
-            COMMAND "${{ matrix.config.environment_script }}" && set
-            OUTPUT_FILE environment_script_output.txt
-          )
-          file(STRINGS environment_script_output.txt output_lines)
-          foreach(line IN LISTS output_lines)
-            if (line MATCHES "^([a-zA-Z0-9_-]+)=(.*)$")
-              set(ENV{${CMAKE_MATCH_1}} "${CMAKE_MATCH_2}")
-            endif()
-          endforeach()
-        endif()
-
         set(ENV{NINJA_STATUS} "[%f/%t %o/sec] ")
 
         execute_process(
           COMMAND python
             -u
             ${{ steps.qt_creator.outputs.qtc_dir }}/scripts/build_plugin.py
-            --name "$ENV{PLUGIN_NAME}-$ENV{QT_CREATOR_VERSION}-${{ matrix.config.artifact }}"
+            --name "$ENV{PLUGIN_NAME}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}"
             --src .
-            --add-config=-DCMAKE_TOOLCHAIN_FILE=$ENV{GITHUB_WORKSPACE}/vcpkg/scripts/buildsystems/vcpkg.cmake
+            --add-config=-DCMAKE_TOOLCHAIN_FILE=${{ matrix.config.qtc_version }}/vcpkg/scripts/buildsystems/vcpkg.cmake
             --build build
             --qt-path "${{ steps.qt.outputs.qt_dir }}"
             --qtc-path "${{ steps.qt_creator.outputs.qtc_dir }}"
@@ -203,8 +191,8 @@ jobs:
     - uses: actions/upload-artifact@v2
       id: upload_artifact
       with:
-        path: ./${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}.7z
-        name: ${{ env.PLUGIN_NAME}}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}.7z
+        path: ./${{ env.PLUGIN_NAME }}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}.7z
+        name: ${{ env.PLUGIN_NAME}}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}.7z
 
   release:
     if: contains(github.ref, 'tags/v')
@@ -254,7 +242,7 @@ jobs:
     - name: Download artifact
       uses: actions/download-artifact@v1
       with:
-        name: ${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}
+        name: ${{ env.PLUGIN_NAME }}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}
         path: ./
 
     - name: Download URL
@@ -274,6 +262,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.set_upload_url.outputs.upload_url }}
-        asset_path: ./${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}
-        asset_name: ${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}
+        asset_path: ./${{ env.PLUGIN_NAME }}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}
+        asset_name: ${{ env.PLUGIN_NAME }}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}
         asset_content_type: application/x-7z-compressed
