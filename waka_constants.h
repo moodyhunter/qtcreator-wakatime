@@ -23,6 +23,9 @@ struct OSInfo
 {
     OSType _os;
     OSArch _arch;
+
+public:
+    OSInfo(OSType type, OSArch arch):_os(type),_arch(arch){}
 };
 } // namespace QtCreatorWakatime
 } // namespace Constants

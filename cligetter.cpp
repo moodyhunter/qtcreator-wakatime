@@ -183,27 +183,27 @@ void CliGetter::startGettingAssertUrl(){
     std::string arch = QSysInfo::buildCpuArchitecture().toStdString();
 #ifdef Q_OS_WINDOWS
     if(arch == "x86_64"){
-        _osInfo = OSInfo{OSType::WINDOWS, OSArch::AMD64};//enum problems with msvc github actions
+        _osInfo = OSInfo(OSType::WINDOWS, OSArch::AMD64);//enum problems with msvc github actions
     }else if(arch == "i386"){
-        _osInfo = OSInfo{OSType::WINDOWS, OSArch::I386};//enum problems with msvc github actions
+        _osInfo = OSInfo(OSType::WINDOWS, OSArch::I386);//enum problems with msvc github actions
     }
 #endif
 #ifdef Q_OS_LINUX
     if(arch == "x86_64"){
-        _osInfo = OSInfo{OSType::LINUX, OSArch::AMD64};
+        _osInfo = OSInfo(OSType::LINUX, OSArch::AMD64);
     }else if(arch == "i386"){
-        _osInfo = OSInfo{OSType::LINUX, OSArch::I386};
+        _osInfo = OSInfo(OSType::LINUX, OSArch::I386);
     }else if(arch == "arm"){
-        _osInfo = OSInfo{OSType::LINUX, OSArch::ARM};
+        _osInfo = OSInfo(OSType::LINUX, OSArch::ARM);
     }else if(arch == "arm64"){
-        _osInfo = OSInfo{OSType::LINUX, OSArch::ARM64};
+        _osInfo = OSInfo(OSType::LINUX, OSArch::ARM64);
     }
 #endif
 #ifdef Q_OS_DARWIN
     if(arch == "x86_64"){
-        _osInfo = OSInfo{OSType::MACOS, OSArch::AMD64};
+        _osInfo = OSInfo(OSType::MACOS, OSArch::AMD64);
     }else if(arch == "arm64"){
-        _osInfo = OSInfo{OSType::MACOS, OSArch::ARM64};
+        _osInfo = OSInfo(OSType::MACOS, OSArch::ARM64);
     }
 #endif
 
