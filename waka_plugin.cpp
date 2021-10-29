@@ -43,13 +43,17 @@ WakaPlugin::~WakaPlugin()
     // Delete members
 }
 
-void WakaPlugin::ShowMessagePrompt(const QString str){
+void WakaPlugin::showMessagePrompt(const QString str){
+    if(_wakaOptions.isNull())
+        return;
 
+    QTC_ASSERT(!_wakaOptions->isDebug(),
 #if IDE_LESS_15_VERSION==1
    Core::MessageManager::write(str);
 #else
    Core::MessageManager::writeDisrupting(QString(str));
 #endif
+    );
 }
 
 QDir WakaPlugin::getWakaCLILocation(){
@@ -73,6 +77,10 @@ bool WakaPlugin::initialize(const QStringList &arguments, QString *errorString)
     Q_UNUSED(arguments)
     Q_UNUSED(errorString)
 
+    //this needs to be hear to load options
+    _wakaOptions.reset(new WakaOptions);
+    new WakaOptionsPage(_wakaOptions, this);
+
     _cliGetter = new CliGetter();
 
     _cliGettingThread = new QThread(this);
@@ -87,7 +95,7 @@ bool WakaPlugin::initialize(const QStringList &arguments, QString *errorString)
     connect(this,&WakaPlugin::sendHeartBeat,
             _cliGetter,&CliGetter::startHearBeat);
     //for showing prompts
-    connect(_cliGetter,&CliGetter::promptMessage,this,&ShowMessagePrompt);
+    connect(_cliGetter,&CliGetter::promptMessage,this,&WakaPlugin::showMessagePrompt);
 
     //check if has wakatime-cli in path
     //if not then try download it based of the users operating system
@@ -106,15 +114,15 @@ bool WakaPlugin::initialize(const QStringList &arguments, QString *errorString)
 }
 
 void WakaPlugin::onDoneSettingUpCLI(){
-    ShowMessagePrompt("WakatimeCLI setup");
 
     //check if is latest version
     //check if user has asked for updated version
     //if so, then try update the version of wakatime-cli
 
-    _req_url = std::make_unique<QUrl>();
     _wakaOptions.reset(new WakaOptions);
     new WakaOptionsPage(_wakaOptions, this);
+
+    showMessagePrompt("WakatimeCLI setup");
 
     connect(_wakaOptions.data(), &WakaOptions::inStatusBarChanged,
             this, &WakaPlugin::onInStatusBarChanged);
@@ -128,7 +136,7 @@ void WakaPlugin::onDoneSettingUpCLI(){
 
     onInStatusBarChanged();
 
-    QTC_ASSERT(!_wakaOptions->isDebug(),ShowMessagePrompt("Waka plugin initialized!"));
+    showMessagePrompt("Waka plugin initialized!");
 }
 
 void WakaPlugin::extensionsInitialized()
