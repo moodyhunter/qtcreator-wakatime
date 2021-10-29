@@ -19,14 +19,14 @@ jobs:
         - {
             name: "Windows Latest MSVC QtCreator 4.14.1", artifact: "Windows-x64",
             os: windows-latest,
-            qtc_version: 4.14.1
+            qtc_version: 4.14.1,
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
         - {
             name: "Ubuntu Latest GCC QtCreator 4.14.1", artifact: "Linux-x64",
             os: ubuntu-latest,
-            qtc_version: 4.14.1
+            qtc_version: 4.14.1,
             cc: "gcc", cxx: "g++"
           }
 
