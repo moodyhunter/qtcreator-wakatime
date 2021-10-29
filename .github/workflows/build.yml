@@ -159,7 +159,7 @@ jobs:
 
     - name: Build for Linux
       if: matrix.config.os != 'windows-latest'
-      shell: cmake -P {0}
+      shell: bash
       run: |
         python -u
           ${{ steps.qt_creator.outputs.qtc_dir }}/scripts/build_plugin.py
