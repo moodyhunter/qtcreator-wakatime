@@ -101,6 +101,7 @@ jobs:
         endforeach()
 
     - name: Build
+      shell: cmd
       run: |
             python -u ${{ steps.qt_creator.outputs.qtc_dir }}/scripts/build_plugin.py \
             --src . \
