@@ -103,13 +103,13 @@ jobs:
     - name: Build
       shell: cmd
       run: |
-            python -u ${{ steps.qt_creator.outputs.qtc_dir }}/scripts/build_plugin.py \
-            --src . \
-            --add-config=-DCMAKE_TOOLCHAIN_FILE=$ENV{GITHUB_WORKSPACE}/vcpkg/scripts/buildsystems/vcpkg.cmake \
-            --name ${{ env.PLUGIN_NAME}}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }} \
-            --build build \
-            --qt-path "${{ steps.qt.outputs.qt_dir }}" \
-            --qtc-path "${{ steps.qt_creator.outputs.qtc_dir }}" \
+            python -u ${{ steps.qt_creator.outputs.qtc_dir }}/scripts/build_plugin.py ^
+            --src . ^
+            --add-config=-DCMAKE_TOOLCHAIN_FILE=$ENV{GITHUB_WORKSPACE}/vcpkg/scripts/buildsystems/vcpkg.cmake ^
+            --name ${{ env.PLUGIN_NAME}}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }} ^
+            --build build ^
+            --qt-path "${{ steps.qt.outputs.qt_dir }}" ^
+            --qtc-path "${{ steps.qt_creator.outputs.qtc_dir }}" ^
             --output-path "${{ env.GITHUB_WORKSPACE }}"
 
     - uses: actions/upload-artifact@v2
