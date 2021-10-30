@@ -264,7 +264,7 @@ jobs:
   release:
     if: contains(github.ref, 'tags/v')
     runs-on: ubuntu-latest
-    needs: build_windows,build_windows
+    needs: build_linux
 
     steps:
     - name: Create Release
