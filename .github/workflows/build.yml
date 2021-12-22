@@ -19,7 +19,7 @@ jobs:
         - {
             name: "Ubuntu Latest GCC QtCreator 4.14.1", artifact: "Linux-x64",
             os: ubuntu-latest,
-            qtc_version: 4.14.1,
+						qtc_version: 4.15.0,
             cc: "gcc", cxx: "g++"
           }
 
