@@ -115,7 +115,7 @@ jobs:
 
         message("Downloading Qt Creator from ${qtc_base_url}/${qtc_platform}")
 
-        foreach(package qtcreator qtcreator_dev)
+        foreach(qtcreator_dev)
           file(DOWNLOAD
             "${qtc_base_url}/${qtc_platform}/${package}.7z" ./${package}.7z SHOW_PROGRESS)
           execute_process(COMMAND
@@ -126,31 +126,10 @@ jobs:
       run: sudo apt-get install tree && tree ./qtcreator
 
     - name: Build
-      shell: cmake -P {0}
       run: |
-        set(ENV{CC} ${{ matrix.config.cc }})
-        set(ENV{CXX} ${{ matrix.config.cxx }})
-        set(ENV{MACOSX_DEPLOYMENT_TARGET} "10.13")
-        set(ENV{NINJA_STATUS} "[%f/%t %o/sec] ")
-
-        execute_process(
-          COMMAND python
-            -u $ENV{GITHUB_WORKSPACE}/qtcreator/scripts/build_plugin.py
-            --name "$ENV{PLUGIN_NAME}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}"
-            --src .
-            --add-config=-DCMAKE_TOOLCHAIN_FILE=$ENV{GITHUB_WORKSPACE}/vcpkg/scripts/buildsystems/vcpkg.cmake
-            --build build
-            --qt-path "${{ steps.qt.outputs.qt_dir }}"
-            --qtc-path "${{ steps.qt_creator.outputs.qtc_dir }}"
-            --output-path "$ENV{GITHUB_WORKSPACE}"
-          RESULT_VARIABLE result
-        )
-        if (NOT result EQUAL 0)
-          string(REGEX MATCH "FAILED:.*$" error_message "${output}")
-          string(REPLACE "\n" "%0A" error_message "${error_message}")
-          message("::error::${error_message}")
-          message(FATAL_ERROR "Build failed")
-        endif()
+      mkdir build_dir && cd build_dir && cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+       -DQtCreator_DIR=qtcreator/lib/cmake/QtCreator \
+       -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
     - uses: actions/upload-artifact@v2
       id: upload_artifact
