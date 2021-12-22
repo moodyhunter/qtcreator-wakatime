@@ -123,12 +123,12 @@ jobs:
         endforeach()
 
     - name: Show dir tree
-      run: sudo apt-get install tree && tree ./qtcreator
+      run: sudo apt-get install tree && tree ./
 
     - name: Build
       shell: bash
       run: |
-       mkdir build_dir \
+       mkdir build_dir && cd build_dir\
        && cmake ../ -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DQtCreator_DIR=qtcreator/lib/cmake/QtCreator -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
        && cmake --build .
 
