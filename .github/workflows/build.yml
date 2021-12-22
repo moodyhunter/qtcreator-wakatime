@@ -130,7 +130,7 @@ jobs:
       run: |
        mkdir build_dir && cd build_dir\
        && cmake ../ -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-       -DQtCreator_DIR=qtcreator/lib/cmake/QtCreator \
+       -DQtCreator_DIR="${{ steps.qt_creator.outputs.qtc_dir}}"/lib/cmake/QtCreator \
        -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
        -DQt5_DIR="${{ steps.qt.outputs.qt_dir }}"/lib/cmake/Qt5
        && cmake --build .
