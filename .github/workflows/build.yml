@@ -126,10 +126,11 @@ jobs:
       run: sudo apt-get install tree && tree ./qtcreator
 
     - name: Build
+      shell: bash
       run: |
-      mkdir build_dir && cd build_dir && cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-       -DQtCreator_DIR=qtcreator/lib/cmake/QtCreator \
-       -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
+      mkdir build_dir
+      cd build_dir && cmake ../ -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DQtCreator_DIR=qtcreator/lib/cmake/QtCreator -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
+      cd build_dir && cmake --build .
 
     - uses: actions/upload-artifact@v2
       id: upload_artifact
