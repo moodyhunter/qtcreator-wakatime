@@ -30,7 +30,7 @@ jobs:
     - name: Install system libs
       id: install-libs
       if: matrix.config.os == 'ubuntu-latest'
-      run: sudo apt update && sudo apt install libgl1-mesa-dev
+      run: sudo apt update && sudo apt install libgl1-mesa-dev libkf5syntaxhighlighting-dev
 
     - name: Setup vcpkg
       run: git clone https://github.com/microsoft/vcpkg.git && ./vcpkg/bootstrap-vcpkg.sh
