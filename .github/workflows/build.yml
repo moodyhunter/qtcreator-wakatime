@@ -122,6 +122,9 @@ jobs:
             ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qtcreator)
         endforeach()
 
+    - name: Show dir tree
+      run: sudo apt-get install tree && tree ./
+
     - name: Build
       shell: cmake -P {0}
       run: |
