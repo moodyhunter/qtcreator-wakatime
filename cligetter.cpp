@@ -9,6 +9,7 @@
 #include <quazip/quazipfile.h>
 #include <QDir>
 #include <QDirIterator>
+#include <QProcess>
 
 namespace Wakatime {
 namespace Internal {
@@ -26,23 +27,25 @@ CliGetter::CliGetter(){
             this,&CliGetter::startUnzipping);
 }
 
-void CliGetter::startHearBeat(QString file){
+void CliGetter::startHearBeat(const QString file){
     if(_wakaCliExecutablePath.isEmpty()){
         //get the executable path
         auto dir = WakaPlugin::getWakaCLILocation();
         auto iterator = QDirIterator(dir.absolutePath());
         while(iterator.hasNext()){
             auto f = iterator.next();
-            if(iterator.fileInfo().isFile()){
+            if(iterator.fileInfo().isFile() && iterator.fileName().contains("wakatime-cli")){
                 _wakaCliExecutablePath=f;
             }
         }
     }
 
-    QString exec (_wakaCliExecutablePath+" --plugin QtCreator-wakatime/"+WAKATIME_PLUGIN_VERSION
-                  +" --entity "+file);
+    QString cmd=_wakaCliExecutablePath+" --plugin QtCreator-wakatime/"+ QString(WAKATIME_PLUGIN_VERSION)
+            +" --entity "+file;
     //run the hearbeat here
-    system(exec.toStdString().c_str());
+    emit promptMessage("Command: "+_wakaCliExecutablePath);
+    int x = system(cmd.toStdString().c_str());
+    Q_UNUSED(x);
 }
 
 void CliGetter::startUnzipping(QString location){
@@ -52,7 +55,8 @@ void CliGetter::startUnzipping(QString location){
 
     QuaZip zip(location);
     if(!zip.open(QuaZip::Mode::mdUnzip)){
-        emit promptMessage("Error, couldn't read zip file");
+        emit promptMessage("Error, couldn't read zip file, please report the issue");
+        return;
     }
 
     //create directory where to store unzipped files in

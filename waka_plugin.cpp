@@ -56,12 +56,13 @@ void WakaPlugin::showMessagePrompt(const QString str){
 }
 
 QDir WakaPlugin::getWakaCLILocation(){
-    QString default_path = QDir::homePath()+"/.wakatime/wakatime-cli";
+    QString default_path = QDir::homePath().append("/.wakatime");
     return default_path;
 }
 
 bool WakaPlugin::checkIfWakaCLIExist(){
-    return getWakaCLILocation().exists();
+    return getWakaCLILocation()
+            .entryList().filter("wakatime-cli").isEmpty()==false;
 }
 
 bool WakaPlugin::initialize(const QStringList &arguments, QString *errorString)
@@ -88,7 +89,6 @@ bool WakaPlugin::initialize(const QStringList &arguments, QString *errorString)
     connect(this,&WakaPlugin::doneGettingCliAndSettingItUp,
             this,&WakaPlugin::onDoneSettingUpCLI);
 
-    _cliGettingThread->start();
 
     //Heartbeat sending signal slot combo
     connect(this,&WakaPlugin::sendHeartBeat,
@@ -109,6 +109,8 @@ bool WakaPlugin::initialize(const QStringList &arguments, QString *errorString)
     }else{
         emit this->doneGettingCliAndSettingItUp();
     }
+
+    _cliGettingThread->start();
     return true;
 }
 

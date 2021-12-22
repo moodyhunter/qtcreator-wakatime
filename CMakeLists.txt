@@ -1,10 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
 
-# for setting the vcpkg path to be used
-set(CMAKE_TOOLCHAIN_FILE ${CMAKE_TOOLCHAIN_FILE})
-#for stopping qtcreator using it's on vcpkg setup
-set(QT_CREATOR_SKIP_VCPKG_SETUP ON)
-
 # Remove when sharing with others.
 #list(APPEND CMAKE_PREFIX_PATH "/Path/to/Qtcreator/Build/Dir")
 
@@ -24,8 +19,8 @@ set(OPENSSL_USE_STATIC_LIBS ON)
 find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
 
+find_package(Qt5 COMPONENTS Network Widgets REQUIRED)
 find_package(QtCreator COMPONENTS Core ProjectExplorer REQUIRED)
-
 
 set(WAKA_SOURCES
     waka_plugin.cpp
@@ -52,18 +47,18 @@ set(WAKA_RESOURCES
 
 add_qtc_plugin(${PROJECT_NAME}
     PLUGIN_DEPENDS
-        QtCreator::Core
-        QtCreator::TextEditor
+		    QtCreator::Core
+				QtCreator::TextEditor
         QtCreator::ProjectExplorer
 	DEPENDS
         QtCreator::ExtensionSystem
         QtCreator::Utils
-		OpenSSL::SSL
-		ZLIB::ZLIB
-		QuaZip::QuaZip
+				Qt5::Widgets
+				Qt5::Network
+				OpenSSL::SSL
+				ZLIB::ZLIB
+				QuaZip::QuaZip
     SOURCES
-        #.github/workflows/build_cmake.yml
-        #.github/workflows/README.md
         README.md
         ${WAKA_HEADERS}
         ${WAKA_SOURCES}
@@ -74,7 +69,7 @@ add_qtc_plugin(${PROJECT_NAME}
 # set the definition for the version, important for breaking changes in 4.14 between 5.0
 string(COMPARE LESS ${IDE_QT_VERSION_MIN} "5.15.0" IDE_LESS_15_VERSION)
 target_compile_definitions(${PROJECT_NAME} PUBLIC IDE_LESS_15_VERSION=${IDE_LESS_15_VERSION})
-message(STATUS "QTCREATOR_VERSION: ${IDE_LESS_15_VERSION}")
+message(STATUS "QTCREATOR_VERSION LESS_THAN 5.15.0: ${IDE_LESS_15_VERSION}")
 
 # add information about version
 target_compile_definitions(${PROJECT_NAME} PUBLIC WAKATIME_PLUGIN_VERSION="${CMAKE_PROJECT_VERSION}")
