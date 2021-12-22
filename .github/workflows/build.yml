@@ -19,7 +19,7 @@ jobs:
         - {
             name: "Ubuntu Latest GCC QtCreator 4.14.1", artifact: "Linux-x64",
             os: ubuntu-latest,
-						qtc_version: 4.15.0,
+            qtc_version: 4.15.0,
             cc: "gcc", cxx: "g++"
           }
 
@@ -127,12 +127,12 @@ jobs:
       run: |
         set(ENV{CC} ${{ matrix.config.cc }})
         set(ENV{CXX} ${{ matrix.config.cxx }})
-				set(ENV{MACOSX_DEPLOYMENT_TARGET} "10.13")
-				set(ENV{NINJA_STATUS} "[%f/%t %o/sec] ")
+        set(ENV{MACOSX_DEPLOYMENT_TARGET} "10.13")
+        set(ENV{NINJA_STATUS} "[%f/%t %o/sec] ")
 
         execute_process(
           COMMAND python
-					  -u ${{ steps.qt_creator.outputs.qtc_dir }}/scripts/build_plugin.py
+            -u $ENV{GITHUB_WORKSPACE}/qtcreator/scripts/build_plugin.py
             --name "$ENV{PLUGIN_NAME}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}"
             --src .
             --add-config=-DCMAKE_TOOLCHAIN_FILE=$ENV{GITHUB_WORKSPACE}/vcpkg/scripts/buildsystems/vcpkg.cmake
