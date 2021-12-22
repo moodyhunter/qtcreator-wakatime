@@ -123,7 +123,7 @@ jobs:
         endforeach()
 
     - name: Show dir tree
-      run: sudo apt-get install tree && tree ./qtcreator/scripts
+      run: sudo apt-get install tree && tree ./qtcreator
 
     - name: Build
       shell: cmake -P {0}
