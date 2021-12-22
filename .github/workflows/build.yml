@@ -131,7 +131,7 @@ jobs:
 
         execute_process(
           COMMAND python
-					  -u "$ENV{GITHUB_WORKSPACE}/qtcreator"/scripts/build_plugin.py
+					  -u $ENV{GITHUB_WORKSPACE}/qtcreato"/scripts/build_plugin.py
             --name "$ENV{PLUGIN_NAME}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}"
             --src .
             --add-config=-DCMAKE_TOOLCHAIN_FILE=$ENV{GITHUB_WORKSPACE}/vcpkg/scripts/buildsystems/vcpkg.cmake
