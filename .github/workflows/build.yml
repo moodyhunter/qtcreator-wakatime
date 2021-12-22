@@ -129,8 +129,8 @@ jobs:
       shell: bash
       run: |
        mkdir build_dir \
-       cmake ../ -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DQtCreator_DIR=qtcreator/lib/cmake/QtCreator -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
-       cmake --build .
+       && cmake ../ -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DQtCreator_DIR=qtcreator/lib/cmake/QtCreator -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
+       && cmake --build .
 
     - uses: actions/upload-artifact@v2
       id: upload_artifact
