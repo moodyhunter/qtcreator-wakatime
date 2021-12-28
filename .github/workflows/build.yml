@@ -16,9 +16,63 @@ jobs:
       matrix:
         config:
         - {
-            name: "Ubuntu Latest GCC QtCreator 4.14.1", artifact: "Linux-x64",
+            name: "Ubuntu 20.04 GCC QtCreator 4.14.0", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 4.14.0,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 4.14.1", artifact: "Linux-x64",
             os: ubuntu-latest,
             qtc_version: 4.14.1,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 4.14.2", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 4.14.2,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 4.15.0", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 4.15.0,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 4.15.1", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 4.15.1,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 4.15.2", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 4.15.2,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 5.0.0", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 5.0.0,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 5.0.1", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 5.0.1,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 5.0.2", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 5.0.2,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 5.0.3", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 5.0.3,
             cc: "gcc", cxx: "g++"
           }
 
@@ -94,7 +148,7 @@ jobs:
       run: |
         string(REGEX MATCH "([0-9]+.[0-9]+).[0-9]+" outvar "${{ matrix.config.qtc_version }}")
 
-        if ("${{ matrix.config.qtc_version }}" STREQUAL "4.14.1")
+        if ("${CMAKE_MATCH_1}" STREQUAL "4.14")
           set(qtc_base_url "https://download.qt.io/archive/qtcreator/${CMAKE_MATCH_1}/${{ matrix.config.qtc_version }}/installer_source")
         else()
           set(qtc_base_url "https://download.qt.io/official_releases/qtcreator/${CMAKE_MATCH_1}/${{ matrix.config.qtc_version }}/installer_source")
