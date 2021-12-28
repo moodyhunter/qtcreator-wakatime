@@ -5,7 +5,6 @@ on: [push]
 env:
   PLUGIN_NAME: Untitled
   QT_VERSION: 5.15.2
-  QT_CREATOR_SNAPSHOT: NO
   CMAKE_VERSION: 3.18.3
   NINJA_VERSION: 1.10.1
 
@@ -99,11 +98,6 @@ jobs:
           set(qtc_base_url "https://download.qt.io/archive/qtcreator/${CMAKE_MATCH_1}/${{ matrix.config.qtc_version }}/installer_source")
         else()
           set(qtc_base_url "https://download.qt.io/official_releases/qtcreator/${CMAKE_MATCH_1}/${{ matrix.config.qtc_version }}/installer_source")
-        endif()
-
-        set(qtc_snapshot "$ENV{QT_CREATOR_SNAPSHOT}")
-        if (qtc_snapshot)
-          set(qtc_base_url "https://download.qt.io/snapshots/qtcreator/${CMAKE_MATCH_1}/${{matrix.config.qtc_version }}/installer_source/${qtc_snapshot}")
         endif()
 
         if ("${{ runner.os }}" STREQUAL "Linux")
