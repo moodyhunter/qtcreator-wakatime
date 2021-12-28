@@ -63,11 +63,12 @@ add_qtc_plugin(${PROJECT_NAME}
         ${WAKA_RESOURCES}
 )
 
-# set the definition for the version, important for breaking changes in 4.14 between 5.0
-string(COMPARE LESS ${IDE_QT_VERSION_MIN} "5.15.0" IDE_LESS_15_VERSION)
-message(STATUS "YEAAAAAAAHHHHH   ${IDE_QT_VERSION_MIN}")
-target_compile_definitions(${PROJECT_NAME} PUBLIC IDE_LESS_15_VERSION=${IDE_LESS_15_VERSION})
-message(STATUS "QTCREATOR_VERSION LESS_THAN 5.15.0: ${IDE_LESS_15_VERSION}")
+message(STATUS "USING QT_VERSION: ${IDE_QT_VERSION_MIN}")
+
+# set the definition for the version, important for breaking changes in 4.14 between 4.15
+string(COMPARE LESS ${IDE_VERSION} "4.15.0" IDE_LESS_4_15_VERSION)
+target_compile_definitions(${PROJECT_NAME} PUBLIC IDE_LESS_4_15_VERSION=${IDE_LESS_4_15_VERSION})
+message(STATUS "QTCREATOR_VERSION LESS_THAN 4.15.0: ${IDE_LESS_15_VERSION} WITH VERSION ${IDE_VERSION}")
 
 # add information about version
 target_compile_definitions(${PROJECT_NAME} PUBLIC WAKATIME_PLUGIN_VERSION="${CMAKE_PROJECT_VERSION}")
