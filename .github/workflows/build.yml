@@ -248,7 +248,7 @@ jobs:
             --qt-path "${{ steps.qt.outputs.qt_dir }}"
             --qtc-path "${{ steps.qt_creator.outputs.qtc_dir }}"
             --output-path "$ENV{GITHUB_WORKSPACE}"
-            --add-config=-DCMAKE_TOOLCHAIN_FILE:STRING="$ENV{GITHUB_WORKSPACE}"/vcpkg/scripts/buildsystems/vcpkg.cmake
+            --add-config=-DCMAKE_TOOLCHAIN_FILE="$ENV{GITHUB_WORKSPACE}"/vcpkg/scripts/buildsystems/vcpkg.cmake
           RESULT_VARIABLE result
         )
         if (NOT result EQUAL 0)
