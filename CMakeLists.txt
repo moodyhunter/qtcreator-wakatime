@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 # Remove when sharing with others.
-#list(APPEND CMAKE_PREFIX_PATH "/Path/to/Qtcreator/Build/Dir")
+list(APPEND CMAKE_PREFIX_PATH "${QTC_BUILD_PATH}")
 
 project(Wakatime VERSION 0.1.1)
 
@@ -19,7 +19,6 @@ set(OPENSSL_USE_STATIC_LIBS ON)
 find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
 
-find_package(Qt5 COMPONENTS Network Widgets REQUIRED)
 find_package(QtCreator COMPONENTS Core ProjectExplorer REQUIRED)
 
 set(WAKA_SOURCES
@@ -53,8 +52,6 @@ add_qtc_plugin(${PROJECT_NAME}
 	DEPENDS
         QtCreator::ExtensionSystem
         QtCreator::Utils
-				Qt5::Widgets
-				Qt5::Network
 				OpenSSL::SSL
 				ZLIB::ZLIB
 				QuaZip::QuaZip
@@ -68,6 +65,7 @@ add_qtc_plugin(${PROJECT_NAME}
 
 # set the definition for the version, important for breaking changes in 4.14 between 5.0
 string(COMPARE LESS ${IDE_QT_VERSION_MIN} "5.15.0" IDE_LESS_15_VERSION)
+message(STATUS "YEAAAAAAAHHHHH   ${IDE_QT_VERSION_MIN}")
 target_compile_definitions(${PROJECT_NAME} PUBLIC IDE_LESS_15_VERSION=${IDE_LESS_15_VERSION})
 message(STATUS "QTCREATOR_VERSION LESS_THAN 5.15.0: ${IDE_LESS_15_VERSION}")
 
