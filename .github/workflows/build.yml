@@ -1,52 +1,204 @@
 name: Build plugin
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+
+on: [push]
 
 env:
-  PLUGIN_NAME: qtc-wakatime
+  PLUGIN_NAME: Wakatime
   QT_VERSION: 5.15.2
-  QT_CREATOR_VERSION: 4.15.0
-  QT_CREATOR_SNAPSHOT: NO
   CMAKE_VERSION: 3.18.3
   NINJA_VERSION: 1.10.1
 
 jobs:
-  build:
+  build_linux:
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
     strategy:
       matrix:
         config:
         - {
-            name: "Windows Latest MSVC", artifact: "Windows-x64",
+            name: "Ubuntu 20.04 GCC QtCreator 4.14.0", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 4.14.0,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 4.14.1", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 4.14.1,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 4.14.2", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 4.14.2,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 4.15.0", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 4.15.0,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 4.15.1", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 4.15.1,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 4.15.2", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 4.15.2,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 5.0.0", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 5.0.0,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 5.0.1", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 5.0.1,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 5.0.2", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 5.0.2,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Ubuntu 20.04 GCC QtCreator 5.0.3", artifact: "Linux-x64",
+            os: ubuntu-latest,
+            qtc_version: 5.0.3,
+            cc: "gcc", cxx: "g++"
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 4.14.0", artifact: "Windows-x64",
             os: windows-latest,
+            qtc_version: 4.14.0,
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
         - {
-            name: "Ubuntu Latest GCC", artifact: "Linux-x64",
-            os: ubuntu-latest,
-            cc: "gcc", cxx: "g++"
+            name: "Windows Latest MSVC QtCreator 4.14.1", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 4.14.1,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 4.14.2", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 4.14.2,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 4.15.0", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 4.15.0,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 4.15.1", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 4.15.1,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 4.15.2", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 4.15.2,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 5.0.0", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 5.0.0,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 5.0.1", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 5.0.1,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 5.0.2", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 5.0.2,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 5.0.3", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 5.0.3,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
 
     steps:
     - uses: actions/checkout@v1
-    - uses: seanmiddleditch/gha-setup-ninja@master
+
+    - name: Download Ninja and CMake
+      shell: cmake -P {0}
+      run: |
+        set(cmake_version "$ENV{CMAKE_VERSION}")
+        set(ninja_version "$ENV{NINJA_VERSION}")
+
+        if ("${{ runner.os }}" STREQUAL "Windows")
+          set(ninja_suffix "win.zip")
+          set(cmake_suffix "win64-x64.zip")
+          set(cmake_dir "cmake-${cmake_version}-win64-x64/bin")
+        elseif ("${{ runner.os }}" STREQUAL "Linux")
+          set(ninja_suffix "linux.zip")
+          set(cmake_suffix "Linux-x86_64.tar.gz")
+          set(cmake_dir "cmake-${cmake_version}-Linux-x86_64/bin")
+        elseif ("${{ runner.os }}" STREQUAL "macOS")
+          set(ninja_suffix "mac.zip")
+          set(cmake_suffix "Darwin-x86_64.tar.gz")
+          set(cmake_dir "cmake-${cmake_version}-Darwin-x86_64/CMake.app/Contents/bin")
+        endif()
+
+        set(ninja_url "https://github.com/ninja-build/ninja/releases/download/v${ninja_version}/ninja-${ninja_suffix}")
+        file(DOWNLOAD "${ninja_url}" ./ninja.zip SHOW_PROGRESS)
+        execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ninja.zip)
+
+        set(cmake_url "https://github.com/Kitware/CMake/releases/download/v${cmake_version}/cmake-${cmake_version}-${cmake_suffix}")
+        file(DOWNLOAD "${cmake_url}" ./cmake.zip SHOW_PROGRESS)
+        execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./cmake.zip)
+
+        # Add to PATH environment variable
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/${cmake_dir}" cmake_dir)
+        set(path_separator ":")
+        if ("${{ runner.os }}" STREQUAL "Windows")
+          set(path_separator ";")
+        endif()
+        file(APPEND "$ENV{GITHUB_PATH}" "$ENV{GITHUB_WORKSPACE}${path_separator}${cmake_dir}")
+
+        if (NOT "${{ runner.os }}" STREQUAL "Windows")
+          execute_process(
+            COMMAND chmod +x ninja
+            COMMAND chmod +x ${cmake_dir}/cmake
+          )
+        endif()
+
 
     - name: Install system libs
       id: install-libs
       if: matrix.config.os == 'ubuntu-latest'
-      run: sudo apt update && sudo apt install libgl1-mesa-dev
+      run: sudo apt update && sudo apt install libgl1-mesa-dev libkf5syntaxhighlighting-dev
 
     - name: Setup vcpkg
-      if: matrix.config.os == 'windows-latest'
-      run: git clone https://github.com/microsoft/vcpkg.git && ./vcpkg\bootstrap-vcpkg.bat
-
-    - name: Setup vcpkg
-      if: matrix.config.os != 'windows-latest'
       run: git clone https://github.com/microsoft/vcpkg.git && ./vcpkg/bootstrap-vcpkg.sh
 
     - name: Download Qt
@@ -55,6 +207,7 @@ jobs:
       run: |
         set(qt_version "$ENV{QT_VERSION}")
 
+        string(REGEX MATCH "^[0-9]+" qt_version_major "${qt_version}")
         string(REPLACE "." "" qt_version_dotless "${qt_version}")
         if ("${{ runner.os }}" STREQUAL "Windows")
           set(url_os "windows_x86")
@@ -65,45 +218,63 @@ jobs:
           set(url_os "linux_x64")
           set(qt_package_arch_suffix "gcc_64")
           set(qt_dir_prefix "${qt_version}/gcc_64")
-          set(qt_package_suffix "-Linux-RHEL_7_6-GCC-Linux-RHEL_7_6-X86_64")
+          if("${qt_version_major}" STREQUAL "5")
+            set(qt_package_suffix "-Linux-RHEL_7_6-GCC-Linux-RHEL_7_6-X86_64")
+          else()
+            set(qt_package_suffix "-Linux-RHEL_8_2-GCC-Linux-RHEL_8_2-X86_64")
+          endif()
         elseif ("${{ runner.os }}" STREQUAL "macOS")
           set(url_os "mac_x64")
           set(qt_package_arch_suffix "clang_64")
-          set(qt_dir_prefix "${qt_version}/clang_64")
-          set(qt_package_suffix "-MacOS-MacOS_10_13-Clang-MacOS-MacOS_10_13-X86_64")
+          if("${qt_version_major}" STREQUAL "5")
+            set(qt_dir_prefix "${qt_version}/clang_64")
+            set(qt_package_suffix "-MacOS-MacOS_10_13-Clang-MacOS-MacOS_10_13-X86_64")
+          else()
+            set(qt_dir_prefix "${qt_version}/macos")
+            set(qt_package_suffix "-MacOS-MacOS_11_00-Clang-MacOS-MacOS_11_00-X86_64-ARM64")
+          endif()
         endif()
 
-        set(qt_base_url "https://download.qt.io/online/qtsdkrepository/${url_os}/desktop/qt5_${qt_version_dotless}")
+        set(qt_base_url "https://download.qt.io/online/qtsdkrepository/${url_os}/desktop/qt${qt_version_major}_${qt_version_dotless}")
         file(DOWNLOAD "${qt_base_url}/Updates.xml" ./Updates.xml SHOW_PROGRESS)
 
         file(READ ./Updates.xml updates_xml)
-        string(REGEX MATCH "<Name>qt.qt5.*<Version>([0-9+-.]+)</Version>" updates_xml_output "${updates_xml}")
+        string(REGEX MATCH "<Name>qt.qt${qt_version_major}.*<Version>([0-9+-.]+)</Version>" updates_xml_output "${updates_xml}")
         set(qt_package_version ${CMAKE_MATCH_1})
 
-        file(MAKE_DIRECTORY qt5)
+        file(MAKE_DIRECTORY qt)
 
         # Save the path for other steps
-        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/qt5/${qt_dir_prefix}" qt_dir)
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/qt/${qt_dir_prefix}" qt_dir)
         message("::set-output name=qt_dir::${qt_dir}")
 
         message("Downloading Qt to ${qt_dir}")
         function(downloadAndExtract url archive)
           message("Downloading ${url}")
           file(DOWNLOAD "${url}" ./${archive} SHOW_PROGRESS)
-          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ../${archive} WORKING_DIRECTORY qt5)
+          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ../${archive} WORKING_DIRECTORY qt)
         endfunction()
 
         foreach(package qtbase qtdeclarative)
           downloadAndExtract(
-            "${qt_base_url}/qt.qt5.${qt_version_dotless}.${qt_package_arch_suffix}/${qt_package_version}${package}${qt_package_suffix}.7z"
+            "${qt_base_url}/qt.qt${qt_version_major}.${qt_version_dotless}.${qt_package_arch_suffix}/${qt_package_version}${package}${qt_package_suffix}.7z"
             ${package}.7z
           )
         endforeach()
 
+        if("${qt_version_major}" STREQUAL "6")
+          foreach(package qt5compat qtshadertools)
+            downloadAndExtract(
+              "${qt_base_url}/qt.qt6.${qt_version_dotless}.${package}.${qt_package_arch_suffix}/${qt_package_version}${package}${qt_package_suffix}.7z"
+              ${package}.7z
+            )
+          endforeach()
+        endif()
+
         # uic depends on libicu56.so
         if ("${{ runner.os }}" STREQUAL "Linux")
           downloadAndExtract(
-            "${qt_base_url}/qt.qt5.${qt_version_dotless}.${qt_package_arch_suffix}/${qt_package_version}icu-linux-Rhel7.2-x64.7z"
+            "${qt_base_url}/qt.qt${qt_version_major}.${qt_version_dotless}.${qt_package_arch_suffix}/${qt_package_version}icu-linux-Rhel7.2-x64.7z"
             icu.7z
           )
         endif()
@@ -112,12 +283,12 @@ jobs:
       id: qt_creator
       shell: cmake -P {0}
       run: |
-        string(REGEX MATCH "([0-9]+.[0-9]+).[0-9]+" outvar "$ENV{QT_CREATOR_VERSION}")
+        string(REGEX MATCH "([0-9]+.[0-9]+).[0-9]+" outvar "${{ matrix.config.qtc_version }}")
 
-        set(qtc_base_url "https://download.qt.io/official_releases/qtcreator/${CMAKE_MATCH_1}/$ENV{QT_CREATOR_VERSION}/installer_source")
-        set(qtc_snapshot "$ENV{QT_CREATOR_SNAPSHOT}")
-        if (qtc_snapshot)
-          set(qtc_base_url "https://download.qt.io/snapshots/qtcreator/${CMAKE_MATCH_1}/$ENV{QT_CREATOR_VERSION}/installer_source/${qtc_snapshot}")
+        if ("${CMAKE_MATCH_1}" STREQUAL "4.14")
+          set(qtc_base_url "https://download.qt.io/archive/qtcreator/${CMAKE_MATCH_1}/${{ matrix.config.qtc_version }}/installer_source")
+        else()
+          set(qtc_base_url "https://download.qt.io/official_releases/qtcreator/${CMAKE_MATCH_1}/${{ matrix.config.qtc_version }}/installer_source")
         endif()
 
         if ("${{ runner.os }}" STREQUAL "Windows")
@@ -136,31 +307,14 @@ jobs:
 
         message("Downloading Qt Creator from ${qtc_base_url}/${qtc_platform}")
 
-        foreach(package qtcreator qtcreator_dev)
+        foreach(package qtcreator_dev qtcreator)
           file(DOWNLOAD
             "${qtc_base_url}/${qtc_platform}/${package}.7z" ./${package}.7z SHOW_PROGRESS)
           execute_process(COMMAND
             ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qtcreator)
         endforeach()
 
-    # - name: Build for Windows
-    #   if: matrix.config.os == 'windows-latest'
-    #   shell: cmd
-    #   run: |
-    #     "${{ matrix.config.environment_script }}" && python
-    #       -u
-    #       ${{ steps.qt_creator.outputs.qtc_dir }}/scripts/build_plugin.py
-    #       --name %PLUGIN_NAME%-%QT_CREATOR_VERSION%-${{ matrix.config.artifact }}
-    #       --src .
-    #       --add-config=-DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
-    #       --build build
-    #       --qt-path "${{ steps.qt.outputs.qt_dir }}"
-    #       --qtc-path "${{ steps.qt_creator.outputs.qtc_dir }}"
-    #       --output-path %GITHUB_WORKSPACE%
-
-
-    - name: Build plugin
-      # if: matrix.config.os != 'windows-latest'
+    - name: Build
       shell: cmake -P {0}
       run: |
         set(ENV{CC} ${{ matrix.config.cc }})
@@ -183,7 +337,7 @@ jobs:
         set(ENV{NINJA_STATUS} "[%f/%t %o/sec] ")
 
         set(build_plugin_py "scripts/build_plugin.py")
-        foreach(dir "share/qtcreator/scripts" "Qt Creator.app/Contents/Resources/scripts" "Contents/Resources/scripts")
+        foreach(dir "scripts" "share/qtcreator/scripts" "Qt Creator.app/Contents/Resources/scripts" "Contents/Resources/scripts")
           if(EXISTS "${{ steps.qt_creator.outputs.qtc_dir }}/${dir}/build_plugin.py")
             set(build_plugin_py "${dir}/build_plugin.py")
             break()
@@ -193,17 +347,16 @@ jobs:
         execute_process(
           COMMAND python
             -u
-            ${{ steps.qt_creator.outputs.qtc_dir }}/${build_plugin_py}
-            --name "$ENV{PLUGIN_NAME}-$ENV{QT_CREATOR_VERSION}-${{ matrix.config.artifact }}"
+            "${{ steps.qt_creator.outputs.qtc_dir }}/${build_plugin_py}"
+            --name "$ENV{PLUGIN_NAME}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}"
             --src .
-            --add-config=-DCMAKE_TOOLCHAIN_FILE=$ENV{GITHUB_WORKSPACE}/vcpkg/scripts/buildsystems/vcpkg.cmake
             --build build
             --qt-path "${{ steps.qt.outputs.qt_dir }}"
             --qtc-path "${{ steps.qt_creator.outputs.qtc_dir }}"
             --output-path "$ENV{GITHUB_WORKSPACE}"
+            --add-config=-DCMAKE_TOOLCHAIN_FILE=$ENV{GITHUB_WORKSPACE}/vcpkg/scripts/buildsystems/vcpkg.cmake
           RESULT_VARIABLE result
         )
-
         if (NOT result EQUAL 0)
           string(REGEX MATCH "FAILED:.*$" error_message "${output}")
           string(REPLACE "\n" "%0A" error_message "${error_message}")
@@ -211,16 +364,17 @@ jobs:
           message(FATAL_ERROR "Build failed")
         endif()
 
+
     - uses: actions/upload-artifact@v2
       id: upload_artifact
       with:
-        path: ./${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}.7z
-        name: ${{ env.PLUGIN_NAME}}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}.7z
+        path: ./${{ env.PLUGIN_NAME }}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}.7z
+        name: ${{ env.PLUGIN_NAME}}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}.7z
 
   release:
     if: contains(github.ref, 'tags/v')
     runs-on: ubuntu-latest
-    needs: build
+    needs: build_linux
 
     steps:
     - name: Create Release
@@ -259,17 +413,13 @@ jobs:
             name: "Linux Latest x64", artifact: "Linux-x64.7z",
             os: ubuntu-latest
           }
-        - {
-            name: "macOS Latest x64", artifact: "macOS-x64.7z",
-            os: macos-latest
-          }
     needs: release
 
     steps:
     - name: Download artifact
       uses: actions/download-artifact@v1
       with:
-        name: ${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}
+        name: ${{ env.PLUGIN_NAME }}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}
         path: ./
 
     - name: Download URL
@@ -289,6 +439,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.set_upload_url.outputs.upload_url }}
-        asset_path: ./${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}
-        asset_name: ${{ env.PLUGIN_NAME }}-${{ env.QT_CREATOR_VERSION }}-${{ matrix.config.artifact }}
+        asset_path: ./${{ env.PLUGIN_NAME }}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}
+        asset_name: ${{ env.PLUGIN_NAME }}-${{ matrix.config.qtc_version }}-${{ matrix.config.artifact }}
         asset_content_type: application/x-7z-compressed

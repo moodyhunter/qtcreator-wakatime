@@ -43,22 +43,26 @@ WakaPlugin::~WakaPlugin()
     // Delete members
 }
 
-void WakaPlugin::ShowMessagePrompt(const QString str){
+void WakaPlugin::showMessagePrompt(const QString str){
+    if(_wakaOptions.isNull())
+        return;
 
-#if IDE_LESS_15_VERSION==1
-   Core::MessageManager::write(str);
+    if(_wakaOptions->isDebug())
+#if IDE_LESS_4_15_VERSION>0
+       Core::MessageManager::write(str);
 #else
-   Core::MessageManager::writeDisrupting(QString(str));
+       Core::MessageManager::writeDisrupting(QString(str));
 #endif
 }
 
 QDir WakaPlugin::getWakaCLILocation(){
-    QString default_path = QDir::homePath()+"/.wakatime/wakatime-cli";
+    QString default_path = QDir::homePath().append("/.wakatime");
     return default_path;
 }
 
 bool WakaPlugin::checkIfWakaCLIExist(){
-    return getWakaCLILocation().exists();
+    return getWakaCLILocation()
+            .entryList().filter("wakatime-cli").isEmpty()==false;
 }
 
 bool WakaPlugin::initialize(const QStringList &arguments, QString *errorString)
@@ -73,6 +77,10 @@ bool WakaPlugin::initialize(const QStringList &arguments, QString *errorString)
     Q_UNUSED(arguments)
     Q_UNUSED(errorString)
 
+    //this needs to be hear to load options
+    _wakaOptions.reset(new WakaOptions);
+    new WakaOptionsPage(_wakaOptions, this);
+
     _cliGetter = new CliGetter();
 
     _cliGettingThread = new QThread(this);
@@ -81,13 +89,12 @@ bool WakaPlugin::initialize(const QStringList &arguments, QString *errorString)
     connect(this,&WakaPlugin::doneGettingCliAndSettingItUp,
             this,&WakaPlugin::onDoneSettingUpCLI);
 
-    _cliGettingThread->start();
 
     //Heartbeat sending signal slot combo
     connect(this,&WakaPlugin::sendHeartBeat,
             _cliGetter,&CliGetter::startHearBeat);
     //for showing prompts
-    connect(_cliGetter,&CliGetter::promptMessage,this,&ShowMessagePrompt);
+    connect(_cliGetter,&CliGetter::promptMessage,this,&WakaPlugin::showMessagePrompt);
 
     //check if has wakatime-cli in path
     //if not then try download it based of the users operating system
@@ -102,19 +109,21 @@ bool WakaPlugin::initialize(const QStringList &arguments, QString *errorString)
     }else{
         emit this->doneGettingCliAndSettingItUp();
     }
+
+    _cliGettingThread->start();
     return true;
 }
 
 void WakaPlugin::onDoneSettingUpCLI(){
-    ShowMessagePrompt("WakatimeCLI setup");
 
     //check if is latest version
     //check if user has asked for updated version
     //if so, then try update the version of wakatime-cli
 
-    _req_url = std::make_unique<QUrl>();
     _wakaOptions.reset(new WakaOptions);
     new WakaOptionsPage(_wakaOptions, this);
+
+    showMessagePrompt("WakatimeCLI setup");
 
     connect(_wakaOptions.data(), &WakaOptions::inStatusBarChanged,
             this, &WakaPlugin::onInStatusBarChanged);
@@ -128,7 +137,7 @@ void WakaPlugin::onDoneSettingUpCLI(){
 
     onInStatusBarChanged();
 
-    QTC_ASSERT(!_wakaOptions->isDebug(),ShowMessagePrompt("Waka plugin initialized!"));
+    showMessagePrompt("Waka plugin initialized!");
 }
 
 void WakaPlugin::extensionsInitialized()
@@ -140,10 +149,14 @@ void WakaPlugin::extensionsInitialized()
 
 ExtensionSystem::IPlugin::ShutdownFlag WakaPlugin::aboutToShutdown()
 {
-  // Save settings
-  // Disconnect from signals that are not needed during shutdown
-  // Hide UI (if you add UI that is not in the main window directly)
-  return SynchronousShutdown;
+    // Save settings
+    // Disconnect from signals that are not needed during shutdown
+    // Hide UI (if you add UI that is not in the main window directly)
+    if(_cliGettingThread->isRunning()==true){
+        _cliGettingThread->quit();
+    }
+    _cliGettingThread->terminate();
+    return SynchronousShutdown;
 }
 
 void WakaPlugin::onInStatusBarChanged()

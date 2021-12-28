@@ -9,6 +9,7 @@
 #include <quazip/quazipfile.h>
 #include <QDir>
 #include <QDirIterator>
+#include <QProcess>
 
 namespace Wakatime {
 namespace Internal {
@@ -26,23 +27,25 @@ CliGetter::CliGetter(){
             this,&CliGetter::startUnzipping);
 }
 
-void CliGetter::startHearBeat(QString file){
+void CliGetter::startHearBeat(const QString file){
     if(_wakaCliExecutablePath.isEmpty()){
         //get the executable path
         auto dir = WakaPlugin::getWakaCLILocation();
         auto iterator = QDirIterator(dir.absolutePath());
         while(iterator.hasNext()){
             auto f = iterator.next();
-            if(iterator.fileInfo().isFile()){
+            if(iterator.fileInfo().isFile() && iterator.fileName().contains("wakatime-cli")){
                 _wakaCliExecutablePath=f;
             }
         }
     }
 
-    QString exec (_wakaCliExecutablePath+" --plugin QtCreator-wakatime/"+WAKATIME_PLUGIN_VERSION
-                  +" --entity "+file);
+    QString cmd=_wakaCliExecutablePath+" --plugin QtCreator-wakatime/"+ QString(WAKATIME_PLUGIN_VERSION)
+            +" --entity "+file;
     //run the hearbeat here
-    system(exec.toStdString().c_str());
+    emit promptMessage("Command: "+_wakaCliExecutablePath);
+    int x = system(cmd.toStdString().c_str());
+    Q_UNUSED(x);
 }
 
 void CliGetter::startUnzipping(QString location){
@@ -52,7 +55,8 @@ void CliGetter::startUnzipping(QString location){
 
     QuaZip zip(location);
     if(!zip.open(QuaZip::Mode::mdUnzip)){
-        emit promptMessage("Error, couldn't read zip file");
+        emit promptMessage("Error, couldn't read zip file, please report the issue");
+        return;
     }
 
     //create directory where to store unzipped files in
@@ -130,7 +134,7 @@ void CliGetter::startGettingZipDownloadUrl(QString url){
         for(const QJsonValue &val:arr){
             QString downloadUrl = val["browser_download_url"].toString();
             //check os
-            if(cli->_osInfo._os==OSType::WIN){//fix for windows, since fails in github actions
+            if(cli->_osInfo._os==0){//fix for windows, since fails in github actions
                 //only has 64bit and 32bit
                 if(cli->_osInfo._arch==OSArch::AMD64){
                     if(downloadUrl.contains("windows-amd64")){
@@ -178,40 +182,36 @@ void CliGetter::startGettingZipDownloadUrl(QString url){
 
 void CliGetter::startGettingAssertUrl(){
     // dummy in case OS is unsupported
-    _osInfo = OSInfo{OSType::UNKOWN,OSArch::AMD64};
+    _osInfo = OSInfo(OSType::UNKOWN,OSArch::AMD64);
     //get architecture of OS
     std::string arch = QSysInfo::buildCpuArchitecture().toStdString();
 #ifdef Q_OS_WINDOWS
-
-    _osInfo._os = OSType::WIN;
     if(arch == "x86_64"){
-        //_osInfo = OSInfo{0, OSArch::AMD64};//enum problems with msvc github actions
-        _osInfo._arch = OSArch::AMD64;
+        _osInfo = OSInfo(1 , 1);//enum problems with msvc github actions
     }else if(arch == "i386"){
-        //_osInfo = OSInfo{0, OSArch::I386};//enum problems with msvc github actions
-		_osInfo._arch = OSArch::I386;
+        _osInfo = OSInfo(1, 4);//enum problems with msvc github actions
     }
 #endif
 #ifdef Q_OS_LINUX
     if(arch == "x86_64"){
-        _osInfo = OSInfo{OSType::LINUX, OSArch::AMD64};
+        _osInfo = OSInfo(OSType::LINUX, OSArch::AMD64);
     }else if(arch == "i386"){
-        _osInfo = OSInfo{OSType::LINUX, OSArch::I386};
+        _osInfo = OSInfo(OSType::LINUX, OSArch::I386);
     }else if(arch == "arm"){
-        _osInfo = OSInfo{OSType::LINUX, OSArch::ARM};
+        _osInfo = OSInfo(OSType::LINUX, OSArch::ARM);
     }else if(arch == "arm64"){
-        _osInfo = OSInfo{OSType::LINUX, OSArch::ARM64};
+        _osInfo = OSInfo(OSType::LINUX, OSArch::ARM64);
     }
 #endif
 #ifdef Q_OS_DARWIN
     if(arch == "x86_64"){
-        _osInfo = OSInfo{OSType::MACOS, OSArch::AMD64};
+        _osInfo = OSInfo(OSType::MACOS, OSArch::AMD64);
     }else if(arch == "arm64"){
-        _osInfo = OSInfo{OSType::MACOS, OSArch::ARM64};
+        _osInfo = OSInfo(OSType::MACOS, OSArch::ARM64);
     }
 #endif
 
-    auto request = QNetworkRequest(Wakatime::Constants::WAKATIME_RELEASE_URL);
+    auto request = QNetworkRequest(QUrl(Wakatime::Constants::WAKATIME_RELEASE_URL));
     request.setSslConfiguration(_sslConfig);
     auto reply = _netMan->get(request);
     connect(reply,&QNetworkReply::finished,[cli=this,reply](){
@@ -223,7 +223,7 @@ void CliGetter::startGettingAssertUrl(){
             //if we reach here means there was an error
             QString msg = "Sorry, couldn't connect to ";
             msg += reply->url().toString();
-            WakaPlugin::ShowMessagePrompt(msg);
+            emit cli->promptMessage(msg);
         }
     });
     QSslSocket::supportsSsl()?emit promptMessage("SSL support exists"):
