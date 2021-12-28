@@ -20,6 +20,7 @@ find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
 
 find_package(QtCreator COMPONENTS Core ProjectExplorer REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets Network REQUIRED)
 
 set(WAKA_SOURCES
     waka_plugin.cpp
@@ -50,6 +51,9 @@ add_qtc_plugin(${PROJECT_NAME}
 				QtCreator::TextEditor
         QtCreator::ProjectExplorer
 	DEPENDS
+	      Qt5::Core
+				Qt5::Widgets
+				Qt5::Network
         QtCreator::ExtensionSystem
         QtCreator::Utils
 				OpenSSL::SSL
