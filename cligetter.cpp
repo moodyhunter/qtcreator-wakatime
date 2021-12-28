@@ -182,7 +182,7 @@ void CliGetter::startGettingZipDownloadUrl(QString url){
 
 void CliGetter::startGettingAssertUrl(){
     // dummy in case OS is unsupported
-    _osInfo = OSInfo{OSType::UNKOWN,OSArch::AMD64};
+    _osInfo = OSInfo(OSType::UNKOWN,OSArch::AMD64);
     //get architecture of OS
     std::string arch = QSysInfo::buildCpuArchitecture().toStdString();
 #ifdef Q_OS_WINDOWS

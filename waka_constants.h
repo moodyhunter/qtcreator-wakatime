@@ -11,22 +11,22 @@ constexpr char OPTION_ID[] = "Wakatime";
 const QString WAKATIME_RELEASE_URL =
         "https://api.github.com/repos/wakatime/wakatime-cli/releases/latest";
 
-enum OSType{
-    WINDOWS=1,LINUX,MACOS,UNKOWN
+namespace OSType{
+    constexpr int WINDOWS=1,LINUX=2,MACOS=3,UNKOWN=4;
 };
 
-enum OSArch{
-    AMD64=1,ARM64,ARM,I386
+namespace OSArch{
+    constexpr int AMD64=1,ARM64=2,ARM=3,I386=4;
 };
 
 struct OSInfo
 {
-    OSType _os;
-    OSArch _arch;
+    int _os;
+    int _arch;
 
 public:
     OSInfo(){}
-    OSInfo(OSType type, OSArch arch):_os(type),_arch(arch){}
+    OSInfo(const int type, const int arch):_os(type),_arch(arch){}
 };
 } // namespace QtCreatorWakatime
 } // namespace Constants
