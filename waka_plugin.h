@@ -58,7 +58,6 @@ private slots:
 
     void onInStatusBarChanged();
 
-    void onNetReply(QNetworkReply *reply);
     void onDoneSettingUpCLI();
 
 signals:
