@@ -75,6 +75,12 @@ jobs:
             qtc_version: 5.0.3,
             cc: "gcc", cxx: "g++"
           }
+        - {
+            name: "macOS Latest Clang", artifact: "macOS-x64",
+            os: macos-latest,
+            qtc_version: 4.14.0,
+            cc: "clang", cxx: "clang++"
+          }
 
     steps:
     - uses: actions/checkout@v1
