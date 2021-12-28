@@ -82,6 +82,69 @@ jobs:
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
+        - {
+            name: "Windows Latest MSVC QtCreator 4.14.1", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 4.14.1,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 4.14.2", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 4.14.2,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 4.15.0", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 4.15.0,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 4.15.1", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 4.15.1,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 4.15.2", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 4.15.2,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 5.0.0", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 5.0.0,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 5.0.1", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 5.0.1,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 5.0.2", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 5.0.2,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
+        - {
+            name: "Windows Latest MSVC QtCreator 5.0.3", artifact: "Windows-x64",
+            os: windows-latest,
+            qtc_version: 5.0.3,
+            cc: "cl", cxx: "cl",
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
+          }
 
     steps:
     - uses: actions/checkout@v1
