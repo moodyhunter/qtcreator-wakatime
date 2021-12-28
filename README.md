@@ -2,7 +2,7 @@
 
 # Information:
 
-This repo is a fork of https://github.com/BlurryLight/qtcreator-wakatime which is a fork of https://github.com/nonametr/qtcreator-wakatime. The original repo provides binary plugin up to Qtc4.9, which is too old to work with the latest Qtc, and this is a fork from https://github.com/BlurryLight/qtcreator-wakatime to make it possible to update builds and make releases at my own pace, sometimes I contribute back to it too.
+This repo is a fork of https://github.com/BlurryLight/qtcreator-wakatime which is a fork of https://github.com/nonametr/qtcreator-wakatime. The original repo provides binary plugin up to Qtc4.9, which is too old to work with the latest Qtc, and this is a fork from https://github.com/BlurryLight/qtcreator-wakatime.
 
 # Aim:
 QtCreator plugin for automatic time tracking and metrics generated from your programming activity by using [wakatime](https://wakatime.com).
