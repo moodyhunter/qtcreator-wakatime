@@ -2,6 +2,7 @@
 #define WAKATIME_INTERNAL_CLIGETTER_H
 
 #include <QObject>
+#include <chrono>
 #include <QNetworkAccessManager>
 #include "waka_constants.h"
 #include "waka_options.h"
@@ -20,6 +21,7 @@ class CliGetter: public QObject
     const WakaOptions *_wakaOptions;
     OSInfo _osInfo;
     QString _wakaCliExecutablePath;
+    std::chrono::time_point<std::chrono::high_resolution_clock> _previous_heartbeat;
 public:
     CliGetter();
 

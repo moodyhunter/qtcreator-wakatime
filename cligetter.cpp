@@ -40,6 +40,13 @@ void CliGetter::startHearBeat(const QString file){
         }
     }
 
+    auto now = std::chrono::system_clock::now();
+    if (now < (_previous_heartbeat+std::chrono::minutes(2))){
+        //do nothing if not passed 2 minutes
+        return;
+    }
+    _previous_heartbeat = now;
+
     QString cmd=_wakaCliExecutablePath+" --plugin QtCreator-wakatime/"+ QString(WAKATIME_PLUGIN_VERSION)
             +" --entity "+file;
     //run the hearbeat here

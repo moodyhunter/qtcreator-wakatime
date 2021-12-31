@@ -9,7 +9,6 @@
 #include <QPointer>
 #include <QFile>
 #include <memory>
-#include <mutex>
 
 class QNetworkAccessManager;
 class QNetworkReply;
