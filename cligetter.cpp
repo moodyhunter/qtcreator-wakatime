@@ -40,8 +40,8 @@ void CliGetter::startHearBeat(const QString file){
         }
     }
 
-    auto now = std::chrono::system_clock::now();
-    if (now < (_previous_heartbeat+std::chrono::minutes(2))){
+    auto now = QTime::currentTime();
+    if (now < _previous_heartbeat.addSecs(120)){
         //do nothing if not passed 2 minutes
         return;
     }
