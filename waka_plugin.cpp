@@ -77,10 +77,6 @@ bool WakaPlugin::initialize(const QStringList &arguments, QString *errorString)
     Q_UNUSED(arguments)
     Q_UNUSED(errorString)
 
-    //this needs to be hear to load options
-    _wakaOptions.reset(new WakaOptions);
-    new WakaOptionsPage(_wakaOptions, this);
-
     _cliGetter = new CliGetter();
 
     _cliGettingThread = new QThread(this);
@@ -121,7 +117,10 @@ void WakaPlugin::onDoneSettingUpCLI(){
     //if so, then try update the version of wakatime-cli
 
     _wakaOptions.reset(new WakaOptions);
-    new WakaOptionsPage(_wakaOptions, this);
+    if(_page.isNull()){
+        _page.reset(new WakaOptionsPage(_wakaOptions,this));
+    }
+
 
     showMessagePrompt("WakatimeCLI setup");
 

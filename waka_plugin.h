@@ -9,6 +9,7 @@
 #include <QPointer>
 #include <QFile>
 #include <memory>
+#include <mutex>
 
 class QNetworkAccessManager;
 class QNetworkReply;
@@ -75,6 +76,7 @@ private:
     QThread *_cliGettingThread;
     QPointer<QToolButton> _heartBeatButton;
     QSharedPointer<WakaOptions> _wakaOptions;
+    QSharedPointer<WakaOptionsPage> _page;
 };
 
 
