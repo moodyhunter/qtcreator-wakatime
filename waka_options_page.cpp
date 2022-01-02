@@ -1,46 +1,49 @@
 #include "waka_options_page.h"
+
 #include "waka_constants.h"
 #include "waka_options.h"
 
 #include <QCoreApplication>
 
-namespace Wakatime {
-namespace Internal {
-
-WakaOptionsPage::WakaOptionsPage(const QSharedPointer<WakaOptions> &options, QObject *parent) : Core::IOptionsPage(parent), _options(options)
+namespace Wakatime
 {
-    setId(Constants::OPTION_ID);
-    setDisplayName(tr("General"));
-    setCategory(Constants::OPTION_CATEGORY);
-    setDisplayCategory(QCoreApplication::translate("Wakatime", "Wakatime"));
-    setCategoryIcon(Utils::Icon({{":/logo.png", Utils::Theme::PanelTextColorDark}}, Utils::Icon::Tint));
-}
+    namespace Internal
+    {
 
-QWidget *WakaOptionsPage::widget()
-{
-    _options->read();
+        WakaOptionsPage::WakaOptionsPage(const QSharedPointer<WakaOptions> &options, QObject *parent) : Core::IOptionsPage(parent), _options(options)
+        {
+            setId(Constants::OPTION_ID);
+            setDisplayName(tr("General"));
+            setCategory(Constants::OPTION_CATEGORY);
+            setDisplayCategory(QCoreApplication::translate("Wakatime", "Wakatime"));
+            setCategoryIcon(Utils::Icon({ { ":/logo.png", Utils::Theme::PanelTextColorDark } }, Utils::Icon::Tint));
+        }
 
-   if(!_widget)
-   {
-       _widget = new WakaOptionsWidget(_options);
-   }
-   _widget->restore();
+        QWidget *WakaOptionsPage::widget()
+        {
+            _options->read();
 
-   return _widget;
-}
+            if (!_widget)
+            {
+                _widget = new WakaOptionsWidget(_options);
+            }
+            _widget->restore();
 
-void WakaOptionsPage::apply()
-{
-   if(_widget)
-   {
-       _widget->apply();
-   }
-}
+            return _widget;
+        }
 
-void WakaOptionsPage::finish()
-{
-    // Implement the ok button functionality
-}
+        void WakaOptionsPage::apply()
+        {
+            if (_widget)
+            {
+                _widget->apply();
+            }
+        }
 
-} // namespace Internal
-} // namespace QtCreatorWakatime
+        void WakaOptionsPage::finish()
+        {
+            // Implement the ok button functionality
+        }
+
+    } // namespace Internal
+} // namespace Wakatime

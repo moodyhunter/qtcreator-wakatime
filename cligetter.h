@@ -1,46 +1,44 @@
 #ifndef WAKATIME_INTERNAL_CLIGETTER_H
 #define WAKATIME_INTERNAL_CLIGETTER_H
 
-#include <QObject>
-#include <QTime>
-#include <QNetworkAccessManager>
 #include "waka_constants.h"
 #include "waka_options.h"
 
-namespace Wakatime {
-namespace Internal {
+#include <QNetworkAccessManager>
+#include <QObject>
+#include <QTime>
 
-using namespace Wakatime::Constants;
-
-class CliGetter: public QObject
+namespace Wakatime
 {
-    Q_OBJECT
+    namespace Internal
+    {
 
-    QNetworkAccessManager *_netMan;
-    QSslConfiguration _sslConfig;
-    const WakaOptions *_wakaOptions;
-    OSInfo _osInfo;
-    QString _wakaCliExecutablePath;
-    QTime _previous_heartbeat;
-public:
-    CliGetter();
+        using namespace Wakatime::Constants;
 
-    const QSslConfiguration getSslConfiguration()const;
-public slots:
-    void startGettingAssertUrl();
-    void startGettingZipDownloadUrl(QString url);
-    void startDownloadingZip(QString url);
-    void startUnzipping(QString file);
-    void startHearBeat(QString file);
-signals:
-    void doneGettingAssetsUrl(QString url);
-    void doneGettingZipDownloadUrl(QString url);
-    void doneDownloadingZip(QString file);
-    void promptMessage(QString url);
-    void doneSettingWakaTimeCli();
-};
+        class CliGetter : public QObject
+        {
+            Q_OBJECT
 
-} // namespace Internal
+            QNetworkAccessManager *_netMan;
+            QSslConfiguration _sslConfig;
+            const WakaOptions *_wakaOptions;
+            OSInfo _osInfo;
+            QString _wakaCliExecutablePath;
+            QTime _previous_heartbeat;
+
+          public:
+            CliGetter();
+
+            const QSslConfiguration getSslConfiguration() const;
+
+          public slots:
+            void startHearBeat(QString file);
+
+          signals:
+            void promptMessage(QString url);
+        };
+
+    } // namespace Internal
 } // namespace Wakatime
 
 #endif // WAKATIME_INTERNAL_CLIGETTER_H

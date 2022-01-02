@@ -21,11 +21,10 @@ include(SetupQuazip)
 
 # use static openssl
 set(OPENSSL_USE_STATIC_LIBS ON)
-find_package(OpenSSL REQUIRED)
+#find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
 
 find_package(QtCreator COMPONENTS Core ProjectExplorer REQUIRED)
-find_package(Qt5 COMPONENTS Core Widgets Network REQUIRED)
 
 set(WAKA_SOURCES
     waka_plugin.cpp
@@ -52,20 +51,14 @@ set(WAKA_RESOURCES
 
 add_qtc_plugin(${PROJECT_NAME}
     PLUGIN_DEPENDS
-		    QtCreator::Core
-				QtCreator::TextEditor
+        QtCreator::Core
+        QtCreator::TextEditor
         QtCreator::ProjectExplorer
-	DEPENDS
-	      Qt5::Core
-				Qt5::Widgets
-				Qt5::Network
+    DEPENDS
         QtCreator::ExtensionSystem
         QtCreator::Utils
-				OpenSSL::SSL
-				ZLIB::ZLIB
-				QuaZip::QuaZip
+        ZLIB::ZLIB
     SOURCES
-        README.md
         ${WAKA_HEADERS}
         ${WAKA_SOURCES}
         ${WAKA_FORMS}
@@ -75,9 +68,9 @@ add_qtc_plugin(${PROJECT_NAME}
 message(STATUS "USING QT_VERSION: ${IDE_QT_VERSION_MIN}")
 
 # set the definition for the version, important for breaking changes in 4.14 between 4.15
-string(COMPARE LESS ${IDE_VERSION} "4.15.0" IDE_LESS_4_15_VERSION)
-target_compile_definitions(${PROJECT_NAME} PUBLIC IDE_LESS_4_15_VERSION=${IDE_LESS_4_15_VERSION})
-message(STATUS "QTCREATOR_VERSION LESS_THAN 4.15.0: ${IDE_LESS_15_VERSION} WITH VERSION ${IDE_VERSION}")
+#string(COMPARE LESS ${IDE_VERSION} "4.15.0" IDE_LESS_4_15_VERSION)
+#target_compile_definitions(${PROJECT_NAME} PUBLIC IDE_LESS_4_15_VERSION=${IDE_LESS_4_15_VERSION})
+#message(STATUS "QTCREATOR_VERSION LESS_THAN 4.15.0: ${IDE_LESS_15_VERSION} WITH VERSION ${IDE_VERSION}")
 # use c++17
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 

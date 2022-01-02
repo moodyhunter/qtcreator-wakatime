@@ -1,83 +1,83 @@
 #pragma once
 
-#include "waka_global.h"
-#include "waka_constants.h"
 #include "cligetter.h"
+#include "waka_constants.h"
+#include "waka_global.h"
 
-#include <extensionsystem/iplugin.h>
-
-#include <QPointer>
 #include <QFile>
+#include <QPointer>
+#include <extensionsystem/iplugin.h>
 #include <memory>
 
 class QNetworkAccessManager;
 class QNetworkReply;
 class QToolButton;
 
-namespace Core {
+namespace Core
+{
     class IEditor;
     class IDocument;
-}
+} // namespace Core
 
-namespace Wakatime {
-namespace Internal {
-
-class WakaOptions;
-class WakaOptionsPage;
-class CliGetter;
-
-// For using OSInfo
-using namespace Wakatime::Constants;
-
-class WakaPlugin : public ExtensionSystem::IPlugin
+namespace Wakatime
 {
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QtCreatorPlugin" FILE "Wakatime.json")
+    namespace Internal
+    {
 
-public:
+        class WakaOptions;
+        class WakaOptionsPage;
+        class CliGetter;
 
-    WakaPlugin();
-    ~WakaPlugin();
-    void showMessagePrompt(const QString str);
+        // For using OSInfo
+        using namespace Wakatime::Constants;
 
-    bool initialize(const QStringList &arguments, QString *errorString);
-    void extensionsInitialized();
-    ShutdownFlag aboutToShutdown();
+        class WakaPlugin : public ExtensionSystem::IPlugin
+        {
+            Q_OBJECT
+            Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QtCreatorPlugin" FILE "Wakatime.json")
 
-    void trySendHeartbeat(const QString &entry, bool isSaving);
-    static QDir getWakaCLILocation();
+          public:
+            WakaPlugin();
+            ~WakaPlugin();
+            void showMessagePrompt(const QString str);
 
-private:
-    bool checkIfWakaCLIExist();
+            bool initialize(const QStringList &arguments, QString *errorString);
+            void extensionsInitialized();
+            ShutdownFlag aboutToShutdown();
 
-private slots:
-    void onEditorAboutToChange(Core::IEditor *editor);
-    void onEditorChanged(Core::IEditor *editor);
-    void onAboutToSave(Core::IDocument *document);
-    void onEditorStateChanged();
+            void trySendHeartbeat(const QString &entry, bool isSaving);
+            static QDir getWakaCLILocation();
 
-    void onInStatusBarChanged();
+          private:
+            bool checkIfWakaCLIExist();
 
-    void onDoneSettingUpCLI();
+          private slots:
+            void onEditorAboutToChange(Core::IEditor *editor);
+            void onEditorChanged(Core::IEditor *editor);
+            void onAboutToSave(Core::IDocument *document);
+            void onEditorStateChanged();
 
-signals:
-    void doneGettingCliAndSettingItUp();
-    void sendHeartBeat(QString file);
+            void onInStatusBarChanged();
 
-private:
-    qint64 _lastTime = 0;
-    QString _lastEntry{""};
+            void onDoneSettingUpCLI();
 
-    CliGetter *_cliGetter;//managing accessing wakatime-cli
-    bool _cliIsSetup;
+          signals:
+            void doneGettingCliAndSettingItUp();
+            void sendHeartBeat(QString file);
 
-    QString _ignore_patern;
-    QThread *_cliGettingThread;
-    QPointer<QToolButton> _heartBeatButton;
-    QSharedPointer<WakaOptions> _wakaOptions;
-    QSharedPointer<WakaOptionsPage> _page;
-};
+          private:
+            qint64 _lastTime = 0;
+            QString _lastEntry{ "" };
 
+            CliGetter *_cliGetter; // managing accessing wakatime-cli
+            bool _cliIsSetup;
 
-} // namespace Internal
-} // namespace QtCreatorWakatime
+            QString _ignore_patern;
+            QThread *_cliGettingThread;
+            QPointer<QToolButton> _heartBeatButton;
+            QSharedPointer<WakaOptions> _wakaOptions;
+            QSharedPointer<WakaOptionsPage> _page;
+        };
+
+    } // namespace Internal
+} // namespace Wakatime

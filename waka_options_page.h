@@ -3,33 +3,34 @@
 
 #include "waka_options_widget.h"
 
-#include <coreplugin/dialogs/ioptionspage.h>
-
 #include <QPointer>
 #include <QWidget>
+#include <coreplugin/dialogs/ioptionspage.h>
 
-namespace Wakatime {
-namespace Internal {
-
-class WakaOptionsPage : public Core::IOptionsPage
+namespace Wakatime
 {
-    Q_OBJECT
+    namespace Internal
+    {
 
-public:
-    explicit WakaOptionsPage(const QSharedPointer<WakaOptions> &options, QObject *parent = nullptr);
-    virtual ~WakaOptionsPage() override = default;
+        class WakaOptionsPage : public Core::IOptionsPage
+        {
+            Q_OBJECT
 
-private:
-    QWidget *widget() override;
-    void apply() override;
-    void finish() override;
+          public:
+            explicit WakaOptionsPage(const QSharedPointer<WakaOptions> &options, QObject *parent = nullptr);
+            virtual ~WakaOptionsPage() override = default;
 
-private:
-    QPointer<WakaOptionsWidget> _widget;
-    QSharedPointer<WakaOptions> _options;
-};
+          private:
+            QWidget *widget() override;
+            void apply() override;
+            void finish() override;
 
-} // namespace Internal
-} // namespace QtCreatorWakatime
+          private:
+            QPointer<WakaOptionsWidget> _widget;
+            QSharedPointer<WakaOptions> _options;
+        };
+
+    } // namespace Internal
+} // namespace Wakatime
 
 #endif // WAKA_OPTIONS_PAGE_H

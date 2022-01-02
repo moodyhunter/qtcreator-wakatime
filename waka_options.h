@@ -1,54 +1,54 @@
 #ifndef WAKATIME_OPTIONS_H
 #define WAKATIME_OPTIONS_H
 
-#include <coreplugin/dialogs/ioptionspage.h>
-
 #include <QPointer>
 #include <QWidget>
+#include <coreplugin/dialogs/ioptionspage.h>
 
-
-namespace Wakatime {
-namespace Internal {
-
-class WakaOptions : public QObject
+namespace Wakatime
 {
-    Q_OBJECT
+    namespace Internal
+    {
 
-public:
-    WakaOptions(QObject *parent = nullptr);
-    virtual ~WakaOptions() override = default;
+        class WakaOptions : public QObject
+        {
+            Q_OBJECT
 
-    void read();
-    void save();
+          public:
+            WakaOptions(QObject *parent = nullptr);
+            virtual ~WakaOptions() override = default;
 
-    bool isDebug() const;
-    bool isEnabled() const;
-    bool inStatusBar() const;
-    bool hasKey() const;
-    QString apiKey() const;
-    QString excludePattern() const;
+            void read();
+            void save();
 
-    void setDebug(bool val);
-    void setEnabled(bool val);
-    void setStatusBar(bool val);
-    void setApiKey(const QString &val);
-    void setExcludePatern(const QString &val);
+            bool isDebug() const;
+            bool isEnabled() const;
+            bool inStatusBar() const;
+            bool hasKey() const;
+            QString apiKey() const;
+            QString excludePattern() const;
 
-signals:
-    void apiKeyChanged();
-    void ignorePaternChanged();
-    void inStatusBarChanged();
+            void setDebug(bool val);
+            void setEnabled(bool val);
+            void setStatusBar(bool val);
+            void setApiKey(const QString &val);
+            void setExcludePatern(const QString &val);
 
-private:
-    bool _isDebug = true;
-    bool _isEnabled = true;
-    bool _statusBarEnabled = false;
-    QString _apiKey;
-    QString _excludePattern;
-    QString _wakatimeCFG;
-};
+          signals:
+            void apiKeyChanged();
+            void ignorePaternChanged();
+            void inStatusBarChanged();
 
-} // namespace Internal
-} // namespace QtCreatorWakatime
+          private:
+            bool _isDebug = true;
+            bool _isEnabled = true;
+            bool _statusBarEnabled = false;
+            QString _apiKey;
+            QString _excludePattern;
+            QString _wakatimeCFG;
+        };
+
+    } // namespace Internal
+} // namespace Wakatime
 
 #endif // WAKATIME_OPTIONS_H

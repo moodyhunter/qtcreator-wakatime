@@ -1,37 +1,38 @@
 #ifndef WAKA_OPTIONS_WIDGET_H
 #define WAKA_OPTIONS_WIDGET_H
 
-#include <coreplugin/dialogs/ioptionspage.h>
-
 #include <QPointer>
 #include <QWidget>
-#include <QPointer>
+#include <coreplugin/dialogs/ioptionspage.h>
 
-namespace Ui {
-class WakaOptionsForm;
+namespace Ui
+{
+    class WakaOptionsForm;
 }
 
-namespace Wakatime {
-namespace Internal {
-
-class WakaOptions;
-class WakaOptionsWidget : public QWidget
+namespace Wakatime
 {
-    Q_OBJECT
+    namespace Internal
+    {
 
-public:
-    explicit WakaOptionsWidget(const QSharedPointer<WakaOptions> &options, QWidget *parent = nullptr);
-    ~WakaOptionsWidget();
+        class WakaOptions;
+        class WakaOptionsWidget : public QWidget
+        {
+            Q_OBJECT
 
-    void restore();
-    void apply();
+          public:
+            explicit WakaOptionsWidget(const QSharedPointer<WakaOptions> &options, QWidget *parent = nullptr);
+            ~WakaOptionsWidget();
 
-private:
-    Ui::WakaOptionsForm *_ui;
-    QSharedPointer<WakaOptions> _options;
-};
+            void restore();
+            void apply();
 
-} // namespace Internal
-} // namespace QtCreatorWakatime
+          private:
+            Ui::WakaOptionsForm *_ui;
+            QSharedPointer<WakaOptions> _options;
+        };
+
+    } // namespace Internal
+} // namespace Wakatime
 
 #endif // WAKA_OPTIONS_WIDGET_H
