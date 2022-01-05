@@ -14,6 +14,8 @@ Build instructions for Ubuntu(should be same for other distributions):
 ### Requirements:
 
 - A C++ compiler,  eg: GCC, Clang, MSVC. Make sure it supports C++17
+- tar executable, should come by default in Windows 10 and linux, 
+  NOTE: install it if you find problems during extraction stage, enable debug to see when it fails to extract.
 - CMake
 - Qt 5.15 (the one currently used) or above
 - QtCreator source from  https://github.com/qt-creator/qt-creator.git

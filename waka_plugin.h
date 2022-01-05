@@ -8,7 +8,6 @@
 
 #include <QPointer>
 #include <QFile>
-#include <memory>
 
 class QNetworkAccessManager;
 class QNetworkReply;
@@ -37,12 +36,12 @@ class WakaPlugin : public ExtensionSystem::IPlugin
 public:
 
     WakaPlugin();
-    ~WakaPlugin();
+    ~WakaPlugin() override;
     void showMessagePrompt(const QString str);
 
-    bool initialize(const QStringList &arguments, QString *errorString);
-    void extensionsInitialized();
-    ShutdownFlag aboutToShutdown();
+    bool initialize(const QStringList &arguments, QString *errorString) override;
+    void extensionsInitialized() override;
+    ShutdownFlag aboutToShutdown() override;
 
     void trySendHeartbeat(const QString &entry, bool isSaving);
     static QDir getWakaCLILocation();

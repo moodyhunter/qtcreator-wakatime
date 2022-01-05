@@ -1,9 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-
-# for setting the vcpkg path to be used
-set(CMAKE_TOOLCHAIN_FILE ${CMAKE_TOOLCHAIN_FILE})
 
 # Remove when sharing with others.
 list(APPEND CMAKE_PREFIX_PATH "${QTC_BUILD_PATH}")
@@ -17,15 +13,15 @@ set(CMAKE_CXX_STANDARD 17)
 
 # for setting up quazip
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-include(SetupQuazip)
+
+# for setting the vcpkg path to be used
+set(CMAKE_TOOLCHAIN_FILE ${CMAKE_TOOLCHAIN_FILE})
 
 # use static openssl
 set(OPENSSL_USE_STATIC_LIBS ON)
 find_package(OpenSSL REQUIRED)
-find_package(ZLIB REQUIRED)
 
-find_package(QtCreator COMPONENTS Core ProjectExplorer REQUIRED)
-find_package(Qt5 COMPONENTS Core Widgets Network REQUIRED)
+find_package(QtCreator COMPONENTS Core ProjectExplorer TextEditor REQUIRED)
 
 set(WAKA_SOURCES
     waka_plugin.cpp
@@ -42,7 +38,7 @@ set(WAKA_HEADERS
     waka_global.h
     waka_options_page.h
     waka_options_widget.h
-    cligetter.h #Handle getting wakatime-cli release
+    cligetter.h
 )
 
 set(WAKA_FORMS
@@ -55,15 +51,10 @@ add_qtc_plugin(${PROJECT_NAME}
 		    QtCreator::Core
 				QtCreator::TextEditor
         QtCreator::ProjectExplorer
-	DEPENDS
-	      Qt5::Core
-				Qt5::Widgets
-				Qt5::Network
+    DEPENDS
         QtCreator::ExtensionSystem
         QtCreator::Utils
-				OpenSSL::SSL
-				ZLIB::ZLIB
-				QuaZip::QuaZip
+        OpenSSL::SSL
     SOURCES
         README.md
         ${WAKA_HEADERS}
@@ -78,8 +69,6 @@ message(STATUS "USING QT_VERSION: ${IDE_QT_VERSION_MIN}")
 string(COMPARE LESS ${IDE_VERSION} "4.15.0" IDE_LESS_4_15_VERSION)
 target_compile_definitions(${PROJECT_NAME} PUBLIC IDE_LESS_4_15_VERSION=${IDE_LESS_4_15_VERSION})
 message(STATUS "QTCREATOR_VERSION LESS_THAN 4.15.0: ${IDE_LESS_15_VERSION} WITH VERSION ${IDE_VERSION}")
-# use c++17
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
 # add information about version
 target_compile_definitions(${PROJECT_NAME} PUBLIC WAKATIME_PLUGIN_VERSION="${CMAKE_PROJECT_VERSION}")
