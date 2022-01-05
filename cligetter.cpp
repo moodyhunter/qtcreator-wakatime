@@ -5,8 +5,6 @@
 #include <coreplugin/coreplugin.h>
 #include <coreplugin/messagemanager.h>
 #include <waka_plugin.h>
-#include <quazip/quazip.h>
-#include <quazip/quazipfile.h>
 #include <QDir>
 #include <QDirIterator>
 #include <QProcess>
@@ -60,48 +58,41 @@ void CliGetter::startUnzipping(QString location){
     fileExists+=location;
     emit promptMessage(fileExists);
 
-    QuaZip zip(location);
-    if(!zip.open(QuaZip::Mode::mdUnzip)){
-        emit promptMessage("Error, couldn't read zip file, please report the issue");
-        return;
-    }
-
     //create directory where to store unzipped files in
     auto waka_extracted_dir = WakaPlugin::getWakaCLILocation();
     if(!waka_extracted_dir.exists()){
         waka_extracted_dir.mkpath(waka_extracted_dir.path());
     }
-
-
     QString msg("Starting Extracting files");
     emit promptMessage(msg);
 
-    QuaZipFile file(&zip);
-    for(bool success=zip.goToFirstFile();success;success=zip.goToNextFile()){
-        //get file name
-        QuaZipFileInfo fileinfo;
-        file.getFileInfo(&fileinfo);
-        QFile f(waka_extracted_dir.path()+QDir::separator()+fileinfo.name);
-        f.open(QIODevice::WriteOnly);
+    int result = 0;
+#ifdef WIN32
+    QString cmd("tar -xf ");
+    cmd.append(location).append(" -C ").append(waka_extracted_dir.absolutePath());
+    result = system(cmd.toStdString().c_str());
+#else
+    QString cmd("tar -xf ");
+    cmd.append(location).append(" -C ").append(waka_extracted_dir.absolutePath());
+    result = system(cmd.toStdString().c_str());
+#endif
+    if(result!=0){
+        msg="Couldn't extract the files properly, check if you have enough storage";
 
-        file.open(QIODevice::ReadOnly);
-        f.write(file.readAll());
-        f.setPermissions(QFile::Permission::ExeUser | QFile::Permission::ReadUser | QFile::Permission::WriteUser);
+        //delete the zipped file
+        QFile zip(location);
+        zip.remove();
+        emit promptMessage(msg);
+    }else{
+        msg="Done Extracting files";
 
-        file.close();
-        f.flush();
-        f.close();
+        //delete the zipped file
+        QFile zip(location);
+        zip.remove();
+        emit doneSettingWakaTimeCli();
+        emit promptMessage(msg);
     }
 
-    msg="Done Extracting files";
-    emit promptMessage(msg);
-
-    zip.close();
-    //delete the zipped file
-    QFile zipFile(location);
-    zipFile.remove();
-
-    emit doneSettingWakaTimeCli();
 }
 
 void CliGetter::startDownloadingZip(QString url){
@@ -141,7 +132,7 @@ void CliGetter::startGettingZipDownloadUrl(QString url){
         for(const QJsonValue &val:arr){
             QString downloadUrl = val["browser_download_url"].toString();
             //check os
-            if(cli->_osInfo._os==0){//fix for windows, since fails in github actions
+            if(cli->_osInfo._os==1){//fix for windows, since fails in github actions
                 //only has 64bit and 32bit
                 if(cli->_osInfo._arch==OSArch::AMD64){
                     if(downloadUrl.contains("windows-amd64")){
