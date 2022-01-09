@@ -85,14 +85,14 @@ jobs:
             cc: "gcc", cxx: "g++"
           }
         - {
-            name: "Ubuntu 20.04 GCC QtCreator 5.0.3", artifact: "Linux-x64",
+            name: "Ubuntu 20.04 GCC QtCreator 6.0.0", artifact: "Linux-x64",
             os: ubuntu-latest,
             qtc_version: 6.0.0,
             qt_version: 6.2.2,
             cc: "gcc", cxx: "g++"
           }
         - {
-            name: "Ubuntu 20.04 GCC QtCreator 5.0.3", artifact: "Linux-x64",
+            name: "Ubuntu 20.04 GCC QtCreator 6.0.1", artifact: "Linux-x64",
             os: ubuntu-latest,
             qtc_version: 6.0.1,
             qt_version: 6.2.2,
@@ -179,7 +179,7 @@ jobs:
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
         - {
-            name: "Windows Latest MSVC QtCreator 5.0.3", artifact: "Windows-x64",
+            name: "Windows Latest MSVC QtCreator 6.0.0", artifact: "Windows-x64",
             os: windows-latest,
             qtc_version: 6.0.0,
             qt_version: 6.2.2,
@@ -187,7 +187,7 @@ jobs:
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
         - {
-            name: "Windows Latest MSVC QtCreator 5.0.3", artifact: "Windows-x64",
+            name: "Windows Latest MSVC QtCreator 6.0.1", artifact: "Windows-x64",
             os: windows-latest,
             qtc_version: 6.0.1,
             qt_version: 6.2.2,
