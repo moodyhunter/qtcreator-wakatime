@@ -4,7 +4,6 @@ on: [push]
 
 env:
   PLUGIN_NAME: Wakatime
-  QT_VERSION: 5.15.2
   CMAKE_VERSION: 3.18.3
   NINJA_VERSION: 1.10.1
 
@@ -19,66 +18,77 @@ jobs:
             name: "Ubuntu 20.04 GCC QtCreator 4.14.0", artifact: "Linux-x64",
             os: ubuntu-latest,
             qtc_version: 4.14.0,
+            qt_version: 5.15.2
             cc: "gcc", cxx: "g++"
           }
         - {
             name: "Ubuntu 20.04 GCC QtCreator 4.14.1", artifact: "Linux-x64",
             os: ubuntu-latest,
             qtc_version: 4.14.1,
+            qt_version: 5.15.2
             cc: "gcc", cxx: "g++"
           }
         - {
             name: "Ubuntu 20.04 GCC QtCreator 4.14.2", artifact: "Linux-x64",
             os: ubuntu-latest,
             qtc_version: 4.14.2,
+            qt_version: 5.15.2
             cc: "gcc", cxx: "g++"
           }
         - {
             name: "Ubuntu 20.04 GCC QtCreator 4.15.0", artifact: "Linux-x64",
             os: ubuntu-latest,
             qtc_version: 4.15.0,
+            qt_version: 5.15.2
             cc: "gcc", cxx: "g++"
           }
         - {
             name: "Ubuntu 20.04 GCC QtCreator 4.15.1", artifact: "Linux-x64",
             os: ubuntu-latest,
             qtc_version: 4.15.1,
+            qt_version: 5.15.2
             cc: "gcc", cxx: "g++"
           }
         - {
             name: "Ubuntu 20.04 GCC QtCreator 4.15.2", artifact: "Linux-x64",
             os: ubuntu-latest,
             qtc_version: 4.15.2,
+            qt_version: 5.15.2
             cc: "gcc", cxx: "g++"
           }
         - {
             name: "Ubuntu 20.04 GCC QtCreator 5.0.0", artifact: "Linux-x64",
             os: ubuntu-latest,
             qtc_version: 5.0.0,
+            qt_version: 5.15.2
             cc: "gcc", cxx: "g++"
           }
         - {
             name: "Ubuntu 20.04 GCC QtCreator 5.0.1", artifact: "Linux-x64",
             os: ubuntu-latest,
             qtc_version: 5.0.1,
+            qt_version: 5.15.2
             cc: "gcc", cxx: "g++"
           }
         - {
             name: "Ubuntu 20.04 GCC QtCreator 5.0.2", artifact: "Linux-x64",
             os: ubuntu-latest,
             qtc_version: 5.0.2,
+            qt_version: 5.15.2
             cc: "gcc", cxx: "g++"
           }
         - {
             name: "Ubuntu 20.04 GCC QtCreator 5.0.3", artifact: "Linux-x64",
             os: ubuntu-latest,
             qtc_version: 5.0.3,
+            qt_version: 5.15.2
             cc: "gcc", cxx: "g++"
           }
         - {
             name: "Windows Latest MSVC QtCreator 4.14.0", artifact: "Windows-x64",
             os: windows-latest,
             qtc_version: 4.14.0,
+            qt_version: 5.15.2
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
@@ -86,6 +96,7 @@ jobs:
             name: "Windows Latest MSVC QtCreator 4.14.1", artifact: "Windows-x64",
             os: windows-latest,
             qtc_version: 4.14.1,
+            qt_version: 5.15.2
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
@@ -93,6 +104,7 @@ jobs:
             name: "Windows Latest MSVC QtCreator 4.14.2", artifact: "Windows-x64",
             os: windows-latest,
             qtc_version: 4.14.2,
+            qt_version: 5.15.2
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
@@ -100,6 +112,7 @@ jobs:
             name: "Windows Latest MSVC QtCreator 4.15.0", artifact: "Windows-x64",
             os: windows-latest,
             qtc_version: 4.15.0,
+            qt_version: 5.15.2
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
@@ -107,6 +120,7 @@ jobs:
             name: "Windows Latest MSVC QtCreator 4.15.1", artifact: "Windows-x64",
             os: windows-latest,
             qtc_version: 4.15.1,
+            qt_version: 5.15.2
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
@@ -114,6 +128,7 @@ jobs:
             name: "Windows Latest MSVC QtCreator 4.15.2", artifact: "Windows-x64",
             os: windows-latest,
             qtc_version: 4.15.2,
+            qt_version: 5.15.2
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
@@ -121,6 +136,7 @@ jobs:
             name: "Windows Latest MSVC QtCreator 5.0.0", artifact: "Windows-x64",
             os: windows-latest,
             qtc_version: 5.0.0,
+            qt_version: 5.15.2
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
@@ -128,6 +144,7 @@ jobs:
             name: "Windows Latest MSVC QtCreator 5.0.1", artifact: "Windows-x64",
             os: windows-latest,
             qtc_version: 5.0.1,
+            qt_version: 5.15.2
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
@@ -135,6 +152,7 @@ jobs:
             name: "Windows Latest MSVC QtCreator 5.0.2", artifact: "Windows-x64",
             os: windows-latest,
             qtc_version: 5.0.2,
+            qt_version: 5.15.2
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
@@ -142,6 +160,7 @@ jobs:
             name: "Windows Latest MSVC QtCreator 5.0.3", artifact: "Windows-x64",
             os: windows-latest,
             qtc_version: 5.0.3,
+            qt_version: 5.15.2
             cc: "cl", cxx: "cl",
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
           }
@@ -205,7 +224,7 @@ jobs:
       id: qt
       shell: cmake -P {0}
       run: |
-        set(qt_version "$ENV{QT_VERSION}")
+        set(qt_version "${{ matrix.config.qt_version }}")
 
         string(REGEX MATCH "^[0-9]+" qt_version_major "${qt_version}")
         string(REPLACE "." "" qt_version_dotless "${qt_version}")
