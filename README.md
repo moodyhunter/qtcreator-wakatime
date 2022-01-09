@@ -7,6 +7,27 @@ This repo is a fork of https://github.com/BlurryLight/qtcreator-wakatime which i
 # Aim:
 QtCreator plugin for automatic time tracking and metrics generated from your programming activity by using [wakatime](https://wakatime.com).
 
+# Releases:
+
+The builds in the release section will require the following combinations of QT creator and Qt combo
+
+| QT Creator Version | QT Version used |
+| ------------------ | --------------- |
+| 6.0.1              | 6.2.2           |
+| 6.0.0              | 6.2.2           |
+| 5.0.3              | 5.15.2          |
+| 5.0.2              | 5.15.2          |
+| 5.0.1              | 5.15.2          |
+| 5.0.0              | 5.15.2          |
+| 4.15.2             | 5.15.2          |
+| 4.15.1             | 5.15.2          |
+| 4.15.0             | 5.15.2          |
+| 4.14.2             | 5.15.2          |
+| 4.14.1             | 5.15.2          |
+| 4.14.0             | 5.15.2          |
+
+
+
 # Build From Source:
 
 Build instructions for Ubuntu(should be same for other distributions):
