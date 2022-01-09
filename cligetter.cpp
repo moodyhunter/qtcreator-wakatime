@@ -50,11 +50,15 @@ void CliGetter::startHearBeat(const QString file){
     //run the hearbeat here
     emit promptMessage("Command: "+_wakaCliExecutablePath);
     QStringList cmdOptionsList;
-    cmdOptionsList.append("--plugin --plugin QtCreator-wakatime/"+
-                          QString(WAKATIME_PLUGIN_VERSION));
-    cmdOptionsList.append(" --entity "+file);
+    cmdOptionsList.append("--plugin");
+    cmdOptionsList.append("QtCreator-wakatime/"+QString(WAKATIME_PLUGIN_VERSION));
+    cmdOptionsList.append("--entity");
+    cmdOptionsList.append(file);
     QProcess *process = new QProcess(this);
-    process->start(cmd,cmdOptionsList);
+    process->setArguments(cmdOptionsList);
+    process->setProgram(_wakaCliExecutablePath);
+    process->start();
+    qDebug()<<"CMD: "<<process->program()<<" args: "<<process->arguments();
     connect(process,&QProcess::errorOccurred,
             [](QProcess::ProcessError error){
         qDebug()<<"ERROR: "<<error<<"\n";

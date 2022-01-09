@@ -95,6 +95,15 @@ bool WakaPlugin::initialize(const QStringList &arguments, QString *errorString)
     //Heartbeat sending signal slot combo
     connect(this,&WakaPlugin::sendHeartBeat,
             _cliGetter,&CliGetter::startHearBeat);
+    //set the status icon flashing during hearbeats
+    connect(this,&WakaPlugin::sendHeartBeat,[self=this](QString file){
+        if(self->_heartBeatButton.isNull()==false){
+            self->_heartBeatButton->setDisabled(false);
+            QTimer::singleShot(200,[self](){
+                self->_heartBeatButton->setDisabled(true);
+            });
+        }
+    });
     //for showing prompts
     connect(_cliGetter,&CliGetter::promptMessage,this,&WakaPlugin::showMessagePrompt);
 
@@ -162,17 +171,22 @@ ExtensionSystem::IPlugin::ShutdownFlag WakaPlugin::aboutToShutdown()
 
 void WakaPlugin::onInStatusBarChanged()
 {
-    if(_heartBeatButton.data())
+    if(_heartBeatButton.isNull())
     {
-        Core::StatusBarManager::destroyStatusBarWidget(_heartBeatButton.data());
-    }
-    if(_wakaOptions->inStatusBar())
-    {
-        _heartBeatButton = new QToolButton();
+        _heartBeatButton.reset(new QToolButton());
         _heartBeatButton->setIcon(QIcon(":/heartbeat.png"));
         _heartBeatButton->setDisabled(true);
+    }
 
-        Core::StatusBarManager::addStatusBarWidget(_heartBeatButton, Core::StatusBarManager::RightCorner);
+
+    if(_wakaOptions->inStatusBar())
+    {
+        Core::StatusBarManager::addStatusBarWidget(
+                    _heartBeatButton.data(),
+                    Core::StatusBarManager::RightCorner);
+    }else{
+        Core::StatusBarManager::destroyStatusBarWidget(
+                    _heartBeatButton.data());
     }
 }
 
