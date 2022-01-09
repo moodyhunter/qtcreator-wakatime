@@ -118,6 +118,7 @@ bool WakaPlugin::initialize(const QStringList &arguments, QString *errorString)
 
 void WakaPlugin::onDoneSettingUpCLI(){
 
+    //!TODO
     //check if is latest version
     //check if user has asked for updated version
     //if so, then try update the version of wakatime-cli
@@ -196,7 +197,6 @@ void WakaPlugin::onEditorChanged(Core::IEditor *editor)
 
 void WakaPlugin::onAboutToSave(Core::IDocument *document)
 {
-    //emit signal for sending here.
     emit sendHeartBeat(document->filePath().toString());
 }
 
