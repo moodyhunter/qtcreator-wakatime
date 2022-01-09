@@ -505,6 +505,16 @@ jobs:
             os: ubuntu-latest
           }
         - {
+            name: "Windows Latest x64", artifact: "Windows-x64.7z",
+            qtc_version: 6.0.0,
+            os: ubuntu-latest
+          }
+        - {
+            name: "Windows Latest x64", artifact: "Windows-x64.7z",
+            qtc_version: 6.0.1,
+            os: ubuntu-latest
+          }
+        - {
             name: "Linux Latest x64", artifact: "Linux-x64.7z",
             qtc_version: 4.14.0,
             os: ubuntu-latest
@@ -552,6 +562,16 @@ jobs:
         - {
             name: "Linux Latest x64", artifact: "Linux-x64.7z",
             qtc_version: 5.0.3,
+            os: ubuntu-latest
+          }
+        - {
+            name: "Linux Latest x64", artifact: "Linux-x64.7z",
+            qtc_version: 6.0.0,
+            os: ubuntu-latest
+          }
+        - {
+            name: "Linux Latest x64", artifact: "Linux-x64.7z",
+            qtc_version: 6.0.1,
             os: ubuntu-latest
           }
     needs: release
