@@ -72,7 +72,7 @@ private:
 
     QString _ignore_patern;
     QThread *_cliGettingThread;
-    QPointer<QToolButton> _heartBeatButton;
+    QSharedPointer<QToolButton> _heartBeatButton;
     QSharedPointer<WakaOptions> _wakaOptions;
     QSharedPointer<WakaOptionsPage> _page;
 };

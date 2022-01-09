@@ -49,8 +49,24 @@ void CliGetter::startHearBeat(const QString file){
             +" --entity "+file;
     //run the hearbeat here
     emit promptMessage("Command: "+_wakaCliExecutablePath);
-    int x = system(cmd.toStdString().c_str());
-    Q_UNUSED(x);
+    QStringList cmdOptionsList;
+    cmdOptionsList.append("--plugin");
+    cmdOptionsList.append("QtCreator-wakatime/"+QString(WAKATIME_PLUGIN_VERSION));
+    cmdOptionsList.append("--entity");
+    cmdOptionsList.append(file);
+    QProcess *process = new QProcess(this);
+    process->setArguments(cmdOptionsList);
+    process->setProgram(_wakaCliExecutablePath);
+    process->start();
+    qDebug()<<"CMD: "<<process->program()<<" args: "<<process->arguments();
+    connect(process,&QProcess::errorOccurred,
+            [](QProcess::ProcessError error){
+        qDebug()<<"ERROR: "<<error<<"\n";
+    });
+    connect(process,&QProcess::started, [](){
+        qDebug()<<"EXECUTED SUCCESS YEAH!!!"<<"\n";
+    });
+    process->waitForFinished(500000000);
 }
 
 void CliGetter::startUnzipping(QString location){
