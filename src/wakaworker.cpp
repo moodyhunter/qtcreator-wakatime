@@ -39,7 +39,7 @@ namespace Wakatime::Internal
         }
         _previous_heartbeat = now;
 
-        const static auto wakaVersion = u"QtCreator/%1 QtCreator-wakatime/%1"_qs.arg("6").arg(WAKATIME_PLUGIN_VERSION);
+        const static auto wakaVersion = u"QtCreator/%1 QtCreator-wakatime/%2"_qs.arg("6").arg(WAKATIME_PLUGIN_VERSION);
         QStringList cmd = { "--plugin", wakaVersion, "--entity", file };
         if (isSave)
             cmd.append(u"--write"_qs);
